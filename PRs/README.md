@@ -79,12 +79,48 @@ The same change took two trajectories depending on how the maintainer's concern 
 
 ---
 
+## <img src="https://github.com/ingyukoh.png?size=32" width="24" align="center"> [PR #3268 — [Unity plugin] Surface a clear error when mesh asset is missing](https://github.com/google-deepmind/mujoco/pull/3268)
+
+![Status: In review](https://img.shields.io/badge/status-In%20review-d29922?style=flat-square) ![Diff: +6 / -0](https://img.shields.io/badge/diff-%2B6%20%2F%20--0-blue?style=flat-square) ![Files: 1](https://img.shields.io/badge/files-1-lightgrey?style=flat-square)
+
+**Related to:** [#1354](https://github.com/google-deepmind/mujoco/issues/1354) (closed) · **Reviewed by:** [@Balint-H](https://github.com/Balint-H) (Collaborator)
+
+### What this PR did
+
+When `Resources.Load<Mesh>(assetName)` returned `null` in `MjMeshShape.FromMjcf`, the failure was silent — `Mesh` was left null and downstream code (`BuildMesh`, `DebugDraw`) threw an opaque `NullReferenceException` far from the root cause. This patch throws a descriptive exception at the load site so the import aborts with a message that points at the actual problem.
+
+### Context
+
+The runtime fix BH proposed in #1354 (typed `Resources.Load<Mesh>(assetName)`) was already in `main`. This PR fills the **diagnostic gap** that the typed-load fix left behind: when the load returns null (mesh wasn't imported, or its import failed), the user now sees a clear error rather than a downstream NPE.
+
+### Maintainer feedback
+
+> **[@Balint-H](https://github.com/Balint-H) commented (round 1):**
+> A reasonable tweak to make errors with imports from broken MJCFs more instructive. Could also be useful for the future when there are new mesh formats in main MJ that haven't been implemented in Unity yet. Please adjust the wording of the error message based on the feedback!
+
+> *Inline comment:* I thought that non-mesh assets that share the name are no longer the issue. The failure is only when a mesh was not imported, or there was a failure in the import, no? If that's the case, the second half of the error message sentence is unhelpful/redundant.
+
+After the wording was updated — dropped the type-collision clause that BH's own typed-load fix already handles, replaced with the unsupported-mesh-format scenario BH suggested:
+
+> *Currently awaiting BH's re-review.*
+
+### Takeaway for students
+
+Two lessons fused into one small PR. First, **look adjacent to a maintainer's own merged fix** — when BH wrote the typed `Resources.Load<Mesh>` fix for #1354, he closed the *type-collision* failure mode but left a *diagnostic gap* (silent null returns producing crashes far from their cause). That window was real and unclaimed. Second, when a maintainer flags wording that's now wrong because of their own earlier fix, take their suggested replacement scenario **verbatim** — they're telling you exactly what they want to read.
+
+> **Lesson:** Look adjacent to a maintainer's own merged fix for follow-on improvements that polish their work. The maintainer is already invested in that area and is primed to merge improvements that build on what they shipped.
+
+**[→ Open PR #3268 on GitHub](https://github.com/google-deepmind/mujoco/pull/3268)**
+
+---
+
 ## Summary
 
 | Metric | Count |
 |---|---|
-| Total PRs to `google-deepmind/mujoco` | **2** |
+| Total PRs to `google-deepmind/mujoco` | **3** |
 | Approved / awaiting merge | 🟡 **1** |
+| In review (wording revision pushed) | 🟠 **1** |
 | Closed without merge | 🔴 **1** |
 | Tests added | 3 |
 | Maintainer engagements received | 2 ([@Balint-H](https://github.com/Balint-H), [@btaba](https://github.com/btaba)) |
@@ -97,6 +133,7 @@ The same change took two trajectories depending on how the maintainer's concern 
 2. **Validate the approach *before* writing code.** Post a short comment on the issue ("planning to do X — does this align?") and wait for a maintainer thumbs-up. One round-trip prevents the most common rejection mode.
 3. **Read the maintainer's reasoning carefully.** A closed PR with a thoughtful comment is more valuable feedback than a silent merge — it teaches you the project's culture.
 4. **When asked for a flag, give them the flag.** Default-off opt-in turns "should this land for everyone?" into "users can opt in later" — the cheapest possible compromise on contentious behavior changes.
+5. **Look adjacent to merged fixes.** A maintainer's recent fix often closes the obvious failure mode but leaves a diagnostic or edge-case gap. That gap is the perfect target for a tiny follow-on PR — the maintainer is already engaged in the area and primed to merge polish that builds on their own work.
 
 ---
 
