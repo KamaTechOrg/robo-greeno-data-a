@@ -6,16 +6,20 @@ KamaTechOrg · Robo-Greeno Data A · 2026
 
 _One paragraph: your year, background, what drew you to this project._
 
-## My assignment
+## My assignment — Problem A: Body-pose control
 
-**Problem A — Body-pose control.** All six feet stay planted; the body
-rises, lowers, pitches and rolls in a smooth routine. Builds on the
-`pose-wave` demo.
+→ **Full spec, here in this folder:** [`Problem-A-Body-Pose.md`](./Problem-A-Body-Pose.md)
 
-→ Full spec: [`PhantomX/assignments/problem-a-body-pose.md`](../PhantomX/assignments/problem-a-body-pose.md)
-Starting point: [`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
-Deliver: a `body-pose/` folder with `demo_body_pose.py`, a `--check`,
-a short README, and a screen recording.
+All six feet stay planted; the body rises, lowers, pitches and rolls
+in a smooth routine. Builds on the
+[`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/) demo.
+
+**Deliver:** a `body-pose/` folder with `demo_body_pose.py`, a
+`--check`, a short README, and a screen recording.
+
+(Drawn from the two-problem set in
+[`../PhantomX/assignments/`](../PhantomX/assignments/); the companion,
+Problem B — Turn in place, goes to Shira Marzel.)
 
 ## My weekly log
 
