@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hexapod Leg Kinematics — Interactive Explorer</title>
+<style>
+  :root{ --ink:#2c2c2a; --mut:#6b6862; --line:#e3e0d8; --card:#ffffff;
+         --bg:#f5f4f0; --coxa:#9a948a; --femur:#1d9e75; --tibia:#2f7ed8;
+         --foot:#d85a30; --accent:#0f6e56; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+       line-height:1.6;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 56px;}
+  h1{font-size:25px;font-weight:600;margin:0 0 4px;}
+  h2{font-size:17px;font-weight:600;margin:0 0 10px;}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 22px;}
+  .card{background:var(--card);border:1px solid var(--line);
+        border-radius:12px;padding:18px 20px;margin-bottom:18px;}
+  p{margin:0 0 10px;font-size:15px;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 2px;font-size:14px;}
+  .legend span{display:flex;align-items:center;gap:7px;}
+  .sw{width:22px;height:5px;border-radius:3px;display:inline-block;}
+  .ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+       gap:12px 22px;}
+  .grp-title{font-size:13px;font-weight:600;color:var(--accent);
+       text-transform:uppercase;letter-spacing:.04em;margin:4px 0 2px;
+       grid-column:1/-1;}
+  .row label{display:flex;justify-content:space-between;font-size:13px;
+       color:var(--mut);margin-bottom:1px;}
+  .row label b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+  input[type=range]{width:100%;accent-color:var(--accent);}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);
+       background:#fbfaf7;border-radius:8px;cursor:pointer;color:var(--ink);}
+  button:hover{background:#efece4;}
+  .views{display:flex;flex-wrap:wrap;gap:14px;}
+  .view{flex:1 1 320px;min-width:300px;}
+  .view h3{font-size:14px;font-weight:600;margin:0 0 4px;}
+  .view .hint{font-size:12.5px;color:var(--mut);margin:0 0 6px;}
+  svg{width:100%;height:auto;background:#fbfaf7;border:1px solid var(--line);
+      border-radius:8px;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+       gap:10px;margin-top:16px;}
+  .stat{background:#f1efe8;border-radius:8px;padding:10px 12px;}
+  .stat .k{font-size:12px;color:var(--mut);}
+  .stat .v{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .badge{display:inline-block;padding:6px 14px;border-radius:8px;font-size:14px;
+       font-weight:600;margin-top:14px;}
+  .ok{background:#e1f5ee;color:#0f6e56;}
+  .bad{background:#faece7;color:#993c1d;}
+  .math{font-size:14px;}
+  .math .step{padding:7px 0;border-bottom:1px solid var(--line);}
+  .math .step:last-child{border-bottom:none;}
+  .math code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
+       color:var(--accent);}
+  .math .num{font-weight:600;font-variant-numeric:tabular-nums;}
+  pre{background:#f1efe8;border:1px solid var(--line);border-radius:8px;
+      padding:14px 16px;overflow:auto;font-size:12.5px;line-height:1.5;
+      font-family:ui-monospace,Menlo,Consolas,monospace;margin:0;}
+  .foot{font-size:13px;color:var(--mut);}
+  .foot b{color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Hexapod leg kinematics — interactive explorer</h1>
+    <p class="sub">Robo-Greeno &middot; Data A &middot; Stage A learning lab &mdash; forward &amp; inverse kinematics of one 3-DOF leg</p>
+  </header>
+
+  <section class="card">
+    <h2>One leg, three joints</h2>
+    <p>Every spider leg has three powered joints. The <b>coxa</b> swings the whole
+    leg left and right (yaw). The <b>femur</b> and <b>tibia</b> lift and fold it in
+    a vertical plane. <b>Inverse kinematics</b> (IK) is the question this lab answers:
+    given a point in space where you want the foot, what three joint angles put it
+    there? Drag the sliders below and watch the leg solve itself.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--coxa)"></i>coxa link (L&#8321;)</span>
+      <span><i class="sw" style="background:var(--femur)"></i>femur link (L&#8322;)</span>
+      <span><i class="sw" style="background:var(--tibia)"></i>tibia link (L&#8323;)</span>
+      <span><i class="sw" style="background:var(--foot)"></i>foot target</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Controls</h2>
+    <div class="ctl">
+      <div class="grp-title">Foot target &mdash; where you want the foot (relative to the coxa joint)</div>
+      <div class="row"><label>X &mdash; forward <b id="vx">13.0</b></label>
+        <input type="range" id="tx" min="1" max="26" step="0.5" value="13"></div>
+      <div class="row"><label>Y &mdash; sideways <b id="vy">0.0</b></label>
+        <input type="range" id="ty" min="-16" max="16" step="0.5" value="0"></div>
+      <div class="row"><label>Z &mdash; up / down <b id="vz">-9.0</b></label>
+        <input type="range" id="tz" min="-24" max="6" step="0.5" value="-9"></div>
+      <div class="grp-title">Leg geometry &mdash; the config file (swap these for real hardware)</div>
+      <div class="row"><label>L&#8321; coxa length <b id="vL1">4.0</b></label>
+        <input type="range" id="L1" min="2" max="9" step="0.5" value="4"></div>
+      <div class="row"><label>L&#8322; femur length <b id="vL2">8.0</b></label>
+        <input type="range" id="L2" min="5" max="14" step="0.5" value="8"></div>
+      <div class="row"><label>L&#8323; tibia length <b id="vL3">13.0</b></label>
+        <input type="range" id="L3" min="7" max="20" step="0.5" value="13"></div>
+    </div>
+    <div class="presets">
+      <button data-p="13,0,-9">Neutral stance</button>
+      <button data-p="20,4,-7">Reach forward</button>
+      <button data-p="11,0,-2">Foot lifted</button>
+      <button data-p="12,10,-12">Wide &amp; low</button>
+      <button data-p="22,0,-15">Try unreachable</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>The leg solves the target</h2>
+    <div class="views">
+      <div class="view">
+        <h3>Top view &mdash; the coxa yaw</h3>
+        <p class="hint">Looking straight down. The coxa angle &theta;&#8321; just points the leg at the target.</p>
+        <svg id="topsvg" viewBox="0 0 360 250"></svg>
+      </div>
+      <div class="view">
+        <h3>Leg-plane view &mdash; femur &amp; tibia</h3>
+        <p class="hint">A side view inside the leg's own plane. Femur and tibia form a 2-link arm.</p>
+        <svg id="sidesvg" viewBox="0 0 380 310"></svg>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="k">Coxa &theta;&#8321;</div><div class="v" id="oCoxa">&mdash;</div></div>
+      <div class="stat"><div class="k">Femur &theta;&#8322;</div><div class="v" id="oFemur">&mdash;</div></div>
+      <div class="stat"><div class="k">Knee bend</div><div class="v" id="oKnee">&mdash;</div></div>
+      <div class="stat"><div class="k">Foot distance D</div><div class="v" id="oD">&mdash;</div></div>
+    </div>
+    <div id="badge" class="badge ok">Target reachable</div>
+  </section>
+
+  <section class="card">
+    <h2>The math, with your numbers</h2>
+    <p>The solve splits in two: the coxa from the top view, then the femur and
+    tibia as a flat 2-link arm. No iteration &mdash; it is exact, closed-form
+    trigonometry the students can derive and check by hand.</p>
+    <div class="math" id="math"></div>
+  </section>
+
+  <section class="card">
+    <h2>The same solve, in code</h2>
+    <p>This is the starter for Stage A &mdash; one function. In MuJoCo it runs once
+    per leg; each leg passes its own target and the shared geometry.</p>
+    <pre id="ikcode"></pre>
+  </section>
+
+  <section class="card">
+    <p class="foot"><b>Where this fits.</b> This per-leg solver is the heart of
+    Stage A (due Thu 28 May). The full milestone wraps it in MuJoCo: load the
+    open-source PhantomX hexapod, run this IK for all six legs, and the robot
+    stands and poses on command. The link lengths L&#8321;/L&#8322;/L&#8323; live in
+    one config file &mdash; so when the real hardware lands, adapting the robot is
+    a parameter swap, not a rewrite. Stage B then layers walking gaits on top.</p>
+  </section>
+
+</div>
+
+<script>
+const S = {tx:13, ty:0, tz:-9, L1:4, L2:8, L3:13};
+const DEG = r => r*180/Math.PI;
+const cl = v => Math.min(1, Math.max(-1, v));
+
+function solve(){
+  const {tx,ty,tz,L1,L2,L3} = S;
+  const coxa = Math.atan2(ty, tx);
+  const r    = Math.hypot(tx, ty);
+  const rho  = r - L1;
+  const D    = Math.hypot(rho, tz);
+  const dmin = Math.abs(L2 - L3), dmax = L2 + L3;
+  const reach = (D <= dmax + 1e-9 && D >= dmin - 1e-9);
+  const knee  = Math.acos(cl((L2*L2 + L3*L3 - D*D) / (2*L2*L3)));
+  const beta  = Math.acos(cl((L2*L2 + D*D - L3*L3) / (2*L2*D)));
+  const femur = Math.atan2(tz, rho) + beta;
+  return {coxa,r,rho,D,dmin,dmax,reach,knee,femur};
+}
+
+function poly(pts){ return pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' '); }
+function arc(cx,cy,rr,a0,a1){
+  let pts=[]; const n=16;
+  for(let i=0;i<=n;i++){ const a=a0+(a1-a0)*i/n; pts.push([cx+rr*Math.cos(a),cy-rr*Math.sin(a)]); }
+  return '<path d="'+poly(pts)+'" fill="none" stroke="#8a867d" stroke-width="1.4"/>';
+}
+function line(x1,y1,x2,y2,c,w,dash){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)
+    +'" y2="'+y2.toFixed(1)+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round"'
+    +(dash?' stroke-dasharray="'+dash+'"':'')+'/>';
+}
+function dot(x,y,r,c){ return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="'+c+'"/>'; }
+function txt(x,y,s,c,anc,sz,wt){
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" fill="'+(c||'#2c2c2a')
+    +'" font-size="'+(sz||12)+'" font-weight="'+(wt||400)+'" text-anchor="'+(anc||'start')
+    +'" font-family="system-ui,sans-serif">'+s+'</text>';
+}
+
+function drawTop(s){
+  const ox=80, oy=125, k=4.6;
+  const X = wx => ox + wx*k;
+  const Y = wy => oy - wy*k;
+  let g='';
+  g += '<rect x="6" y="78" width="60" height="94" rx="5" fill="#efece4" stroke="#d9d5cb"/>';
+  g += txt(36,130,'body','#8a867d','middle',12);
+  g += line(X(0),Y(0),X(27),Y(0),'#cdc8bd',1.4,'4 4');
+  g += txt(X(27),Y(0)-6,'leg neutral (x)','#a8a39a','end',11);
+  const fx=S.L1*Math.cos(s.coxa), fy=S.L1*Math.sin(s.coxa);
+  g += line(X(0),Y(0),X(fx),Y(fy),'#9a948a',7);
+  g += line(X(fx),Y(fy),X(S.tx),Y(S.ty),'#b9b4aa',5,'5 4');
+  g += arc(X(0),Y(0),26,0,s.coxa);
+  const ma=s.coxa/2;
+  g += txt(X(0)+34*Math.cos(ma),Y(0)-34*Math.sin(ma)+4,
+           'θ₁ '+DEG(s.coxa).toFixed(0)+'°','#5f5e5a','middle',12,600);
+  g += dot(X(fx),Y(fy),3.5,'#2c2c2a');
+  g += dot(X(0),Y(0),5,'#2c2c2a');
+  g += dot(X(S.tx),Y(S.ty),6,'#d85a30');
+  g += txt(X(0)-9,Y(0)+4,'coxa','#2c2c2a','end',12,600);
+  g += txt(X(S.tx),Y(S.ty)-11,'foot','#993c1d','middle',12,600);
+  document.getElementById('topsvg').innerHTML=g;
+}
+
+function drawSide(s){
+  const ox=80, oy=80, k=4.6;
+  const X = rr => ox + rr*k;
+  const Y = zz => oy - zz*k;
+  let g='';
+  g += '<rect x="14" y="34" width="60" height="44" rx="5" fill="#efece4" stroke="#d9d5cb"/>';
+  g += txt(44,60,'body','#8a867d','middle',12);
+  g += line(X(0),Y(0),X(28),Y(0),'#cdc8bd',1.4,'4 4');
+  g += txt(X(28),Y(0)-6,'hip level (z = 0)','#a8a39a','end',11);
+  const fjx=X(S.L1), fjy=Y(0);
+  g += line(X(0),Y(0),fjx,fjy,'#9a948a',7);
+  if(s.reach){
+    const kneeR=S.L1+S.L2*Math.cos(s.femur), kneeZ=S.L2*Math.sin(s.femur);
+    const kx=X(kneeR), ky=Y(kneeZ);
+    g += line(fjx,fjy,kx,ky,'#1d9e75',7);
+    g += line(kx,ky,X(s.r),Y(S.tz),'#2f7ed8',7);
+    g += arc(fjx,fjy,24,0,s.femur);
+    const ma=s.femur/2;
+    g += txt(fjx+34*Math.cos(ma),fjy-34*Math.sin(ma)+4,
+             'θ₂ '+DEG(s.femur).toFixed(0)+'°','#5f5e5a','middle',12,600);
+    g += dot(kx,ky,4.5,'#2c2c2a');
+    g += txt(kx+8,ky-6,'knee','#2c2c2a','start',12,600);
+  } else {
+    const dir=Math.atan2(S.tz,s.rho);
+    const reachLen=(s.D>=s.dmax)?(S.L2+S.L3):Math.abs(S.L2-S.L3);
+    const kneeR=S.L1+S.L2*Math.cos(dir), kneeZ=S.L2*Math.sin(dir);
+    const endR=S.L1+reachLen*Math.cos(dir), endZ=reachLen*Math.sin(dir);
+    g += line(fjx,fjy,X(kneeR),Y(kneeZ),'#1d9e75',7);
+    g += line(X(kneeR),Y(kneeZ),X(endR),Y(endZ),'#2f7ed8',7);
+    g += line(X(endR),Y(endZ),X(s.r),Y(S.tz),'#d85a30',2,'4 3');
+    g += dot(X(endR),Y(endZ),4,'#2c2c2a');
+    g += txt((X(endR)+X(s.r))/2,(Y(endZ)+Y(S.tz))/2-6,'gap','#993c1d','middle',11,600);
+  }
+  g += dot(fjx,fjy,4.5,'#2c2c2a');
+  g += dot(X(0),Y(0),5,'#2c2c2a');
+  g += dot(X(s.r),Y(S.tz),6,'#d85a30');
+  g += txt(X(0)-9,Y(0)+4,'coxa','#2c2c2a','end',12,600);
+  g += txt(fjx,fjy+18,'femur joint','#2c2c2a','middle',12,600);
+  g += txt(X(s.r),Y(S.tz)+(S.tz>-2?-12:18),'foot','#993c1d','middle',12,600);
+  document.getElementById('sidesvg').innerHTML=g;
+}
+
+function drawMath(s){
+  const {L1,L2,L3} = S;
+  const n = v => '<span class="num">'+v+'</span>';
+  const rows = [
+    ['Coxa yaw', 'coxa = atan2(y, x)',
+     'atan2('+S.ty.toFixed(1)+', '+S.tx.toFixed(1)+') = '+n(DEG(s.coxa).toFixed(1)+'°')],
+    ['Horizontal reach', 'r = √(x² + y²)',
+     n(s.r.toFixed(2))],
+    ['Reach past the coxa link', 'ρ = r − L₁',
+     s.r.toFixed(2)+' − '+L1.toFixed(1)+' = '+n(s.rho.toFixed(2))],
+    ['Femur joint → foot', 'D = √(ρ² + z²)',
+     n(s.D.toFixed(2))],
+    ['Reach test', '|L₂ − L₃| ≤ D ≤ L₂ + L₃',
+     n(s.dmin.toFixed(1))+' ≤ '+n(s.D.toFixed(2))+' ≤ '+n(s.dmax.toFixed(1))
+     +'  → '+(s.reach?'reachable':'<span style="color:#993c1d;font-weight:600">out of reach</span>')],
+    ['Knee bend', 'K = acos((L₂² + L₃² − D²) / (2·L₂·L₃))',
+     s.reach? n(DEG(s.knee).toFixed(1)+'°') : '—'],
+    ['Femur pitch', 'θ₂ = atan2(z, ρ) + acos((L₂² + D² − L₃²) / (2·L₂·D))',
+     s.reach? n(DEG(s.femur).toFixed(1)+'°') : '—']
+  ];
+  document.getElementById('math').innerHTML = rows.map(r =>
+    '<div class="step">'+r[0]+': &nbsp;<code>'+r[1]+'</code><br>'+r[2]+'</div>').join('');
+}
+
+function render(){
+  const s = solve();
+  drawTop(s); drawSide(s); drawMath(s);
+  document.getElementById('oCoxa').textContent  = DEG(s.coxa).toFixed(1)+'°';
+  document.getElementById('oFemur').textContent = s.reach? DEG(s.femur).toFixed(1)+'°' : '—';
+  document.getElementById('oKnee').textContent  = s.reach? DEG(s.knee).toFixed(1)+'°' : '—';
+  document.getElementById('oD').textContent     = s.D.toFixed(1);
+  const b = document.getElementById('badge');
+  if(s.reach){ b.className='badge ok'; b.textContent='Target reachable — the leg solves it exactly'; }
+  else { b.className='badge bad'; b.textContent='Target out of reach — the leg is fully '
+         +(s.D>=s.dmax?'extended':'folded')+' and still cannot get there'; }
+}
+
+function wire(id,vid){
+  const el=document.getElementById(id);
+  el.addEventListener('input',()=>{
+    S[id]=parseFloat(el.value);
+    document.getElementById(vid).textContent=parseFloat(el.value).toFixed(1);
+    render();
+  });
+}
+wire('tx','vx'); wire('ty','vy'); wire('tz','vz');
+wire('L1','vL1'); wire('L2','vL2'); wire('L3','vL3');
+
+document.querySelectorAll('.presets button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const [x,y,z]=btn.dataset.p.split(',').map(Number);
+    S.tx=x; S.ty=y; S.tz=z;
+    document.getElementById('tx').value=x; document.getElementById('vx').textContent=x.toFixed(1);
+    document.getElementById('ty').value=y; document.getElementById('vy').textContent=y.toFixed(1);
+    document.getElementById('tz').value=z; document.getElementById('vz').textContent=z.toFixed(1);
+    render();
+  });
+});
+
+document.getElementById('ikcode').textContent =
+`import numpy as np
+
+def leg_ik(x, y, z, L1, L2, L3):
+    """Per-leg inverse kinematics for one 3-DOF hexapod leg.
+    x, y, z : foot target relative to the coxa joint.
+    Returns (coxa, femur, tibia) joint angles in radians,
+    or None if the target is out of reach."""
+    coxa = np.arctan2(y, x)                       # top view: point the leg
+    r    = np.hypot(x, y)
+    rho  = r - L1                                 # reach past the coxa link
+    D    = np.hypot(rho, z)                       # femur joint -> foot
+
+    if not abs(L2 - L3) <= D <= L2 + L3:
+        return None                               # unreachable
+
+    knee  = np.arccos((L2**2 + L3**2 - D**2) / (2 * L2 * L3))
+    femur = np.arctan2(z, rho) + \\
+            np.arccos((L2**2 + D**2 - L3**2) / (2 * L2 * D))
+    tibia = knee - np.pi                          # 0 = straight leg
+    return coxa, femur, tibia
+
+# In MuJoCo: run leg_ik once per leg, then write the three
+# angles into that leg's joint targets (data.ctrl / qpos).
+# L1, L2, L3 come from one shared geometry config file.`;
+
+render();
+</script>
+</body>
+</html>

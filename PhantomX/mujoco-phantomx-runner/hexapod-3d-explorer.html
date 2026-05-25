@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hexapod in 3D — the MuJoCo runner, interactive</title>
+<style>
+  :root{ --ink:#2c2c2a; --mut:#6b6862; --line:#e3e0d8; --card:#ffffff;
+         --bg:#f5f4f0; --coxa:#9a948a; --femur:#1d9e75; --tibia:#2f7ed8;
+         --foot:#d85a30; --accent:#0f6e56; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+       line-height:1.6;}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 56px;}
+  h1{font-size:25px;font-weight:600;margin:0 0 4px;}
+  h2{font-size:17px;font-weight:600;margin:0 0 10px;}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 22px;}
+  .card{background:var(--card);border:1px solid var(--line);
+        border-radius:12px;padding:18px 20px;margin-bottom:18px;}
+  p{margin:0 0 10px;font-size:15px;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 2px;font-size:14px;}
+  .legend span{display:flex;align-items:center;gap:7px;}
+  .sw{width:22px;height:5px;border-radius:3px;display:inline-block;}
+  canvas{width:100%;height:430px;display:block;background:#fbfaf7;
+         border:1px solid var(--line);border-radius:8px;touch-action:none;
+         cursor:grab;}
+  canvas:active{cursor:grabbing;}
+  .ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+       gap:10px 22px;margin-top:14px;}
+  .row label{display:flex;justify-content:space-between;font-size:13px;
+       color:var(--mut);margin-bottom:1px;}
+  .row label b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+  input[type=range]{width:100%;accent-color:var(--accent);}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  button{font:inherit;font-size:13px;padding:7px 13px;border:1px solid var(--line);
+       background:#fbfaf7;border-radius:8px;cursor:pointer;color:var(--ink);}
+  button:hover{background:#efece4;}
+  button.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .gait{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 12px;
+        font-size:13.5px;}
+  .pill{padding:3px 10px;border-radius:20px;font-size:12.5px;font-weight:600;}
+  .pA{background:#e1f5ee;color:#0f6e56;}
+  .pB{background:#eef0fb;color:#33459b;}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+  th,td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--line);
+        font-variant-numeric:tabular-nums;}
+  th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;
+     letter-spacing:.03em;}
+  td:first-child,th:first-child{text-align:left;}
+  .tag{font-size:11.5px;font-weight:600;padding:2px 7px;border-radius:5px;}
+  .tStance{background:#f1efe8;color:#5f5e5a;}
+  .tSwing{background:#faece7;color:#993c1d;}
+  .badge{display:inline-block;padding:6px 13px;border-radius:8px;font-size:13.5px;
+       font-weight:600;margin-top:6px;}
+  .ok{background:#e1f5ee;color:#0f6e56;}
+  .bad{background:#faece7;color:#993c1d;}
+  .files{font-size:14px;}
+  .files .step{padding:7px 0;border-bottom:1px solid var(--line);}
+  .files .step:last-child{border-bottom:none;}
+  .files code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
+       color:var(--accent);}
+  .foot{font-size:13px;color:var(--mut);}
+  .foot b{color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Hexapod in 3D — six legs, one solver</h1>
+    <p class="sub">Robo-Greeno &middot; Data A &middot; Stage A &mdash; the MuJoCo + PhantomX runner, made interactive</p>
+  </header>
+
+  <section class="card">
+    <h2>From one leg to a whole robot</h2>
+    <p>The Stage A leg explorer solved <i>one</i> leg. This is the next
+    step: a full six-legged robot. Every leg runs the <b>same closed-form
+    inverse kinematics</b> &mdash; pick where each foot should go, and the
+    solver returns the three joint angles that put it there. The MuJoCo
+    runner in this folder does exactly this, eighteen joints at a time.</p>
+    <p>Drag the robot to orbit the camera. Move the sliders to change its
+    stance. Press <b>Walk</b> to watch the alternating tripod gait.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--coxa)"></i>coxa link</span>
+      <span><i class="sw" style="background:var(--femur)"></i>femur link</span>
+      <span><i class="sw" style="background:var(--tibia)"></i>tibia link</span>
+      <span><i class="sw" style="background:var(--foot)"></i>foot</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>The robot</h2>
+    <canvas id="cv"></canvas>
+    <div class="btns">
+      <button id="bWalk">Walk</button>
+      <button data-preset="stand">Stand</button>
+      <button data-preset="crouch">Crouch</button>
+      <button data-preset="tall">Tall</button>
+      <button id="bView">Reset view</button>
+    </div>
+    <div class="ctl">
+      <div class="row"><label>Body ride height <b id="vH">7.5</b> cm</label>
+        <input type="range" id="sH" min="4.5" max="10.5" step="0.1" value="7.5"></div>
+      <div class="row"><label>Stance width <b id="vS">40</b> cm</label>
+        <input type="range" id="sS" min="30" max="46" step="0.5" value="40"></div>
+      <div class="row"><label>Walk speed &mdash; cycle <b id="vP">1.4</b> s</label>
+        <input type="range" id="sP" min="0.8" max="2.4" step="0.1" value="1.4"></div>
+      <div class="row"><label>Step height <b id="vL">3.0</b> cm</label>
+        <input type="range" id="sL" min="1.0" max="4.5" step="0.1" value="3.0"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>What every leg is doing</h2>
+    <div class="gait">
+      <span>Tripod A <span class="pill pA" id="stA">on the ground</span></span>
+      <span>Tripod B <span class="pill pB" id="stB">on the ground</span></span>
+      <span style="color:var(--mut)" id="gtxt">standing still</span>
+    </div>
+    <table>
+      <thead><tr><th>Leg</th><th>Coxa</th><th>Femur</th><th>Tibia</th><th>Phase</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="reach" class="badge ok">All six feet reachable</div>
+  </section>
+
+  <section class="card">
+    <h2>This is the runner, file by file</h2>
+    <p>Everything you just played with is the Python in this folder. The
+    interactive view and the MuJoCo simulation share the very same logic.</p>
+    <div class="files">
+      <div class="step"><code>config.py</code> &mdash; the one geometry file:
+        link lengths, the six leg mounts, joint limits, the stance and
+        gait numbers. Every slider above edits a value that lives here.</div>
+      <div class="step"><code>hexapod_ik.py</code> &mdash; the closed-form
+        solver. <code>leg_ik()</code> runs once per leg, six times a frame,
+        exactly as it does here in the browser.</div>
+      <div class="step"><code>hexapod_model.py</code> &mdash; builds the
+        MuJoCo model: a round trunk, six 3-DOF legs, eighteen joints.</div>
+      <div class="step"><code>run.py</code> &mdash; the runner. It picks the
+        foot targets (a stance, or this moving gait), solves the IK, and
+        drives the joints. <code>python run.py</code> opens the real
+        physics viewer; <code>python run.py --check</code> proves it.</div>
+    </div>
+    <p class="foot" style="margin-top:12px"><b>Where this fits.</b> Stage A
+    (due 28 May) is this: the per-leg solver wrapped in MuJoCo so the whole
+    robot stands and walks. Because the model and the solver both read
+    <code>config.py</code>, swapping in the real PhantomX hardware later is
+    a one-file change. Stage B then builds proper gaits on top.</p>
+  </section>
+
+</div>
+
+<script>
+(function(){
+const CFG = {
+  COXA:0.040, FEMUR:0.080, TIBIA:0.130, FOOT_R:0.014,
+  BODY_R:0.100, BODY_H:0.018,
+  LEGS:[ {n:'front left', m: 45}, {n:'mid left',  m: 90},
+         {n:'back left',  m:135}, {n:'back right',m:-135},
+         {n:'mid right',  m:-90}, {n:'front right',m:-45} ],
+  TRIPOD_A:[0,2,4]
+};
+const D2R=Math.PI/180, R2D=180/Math.PI;
+CFG.LEGS.forEach(L=>L.r=L.m*D2R);
+
+const VIEW0={az:-38*D2R, el:26*D2R};
+const S={ az:VIEW0.az, el:VIEW0.el, height:0.075, stance:0.20,
+          walking:false, period:1.4, lift:0.030, stride:0.060,
+          t:0, bodyX:0, last:0 };
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+function legIK(x,y,z){
+  const L1=CFG.COXA,L2=CFG.FEMUR,L3=CFG.TIBIA;
+  const coxa=Math.atan2(y,x);
+  const r=Math.hypot(x,y);
+  const rho=r-L1;
+  const D=Math.hypot(rho,z);
+  const reach = D>=Math.abs(L2-L3)-1e-9 && D<=L2+L3+1e-9;
+  const knee=Math.acos(clamp((L2*L2+L3*L3-D*D)/(2*L2*L3),-1,1));
+  const beta=Math.acos(clamp((L2*L2+D*D-L3*L3)/(2*L2*D),-1,1));
+  const femur=Math.atan2(z,rho)+beta;
+  const tibia=knee-Math.PI;
+  return {coxa,femur,tibia,reach};
+}
+
+function gait(i){
+  if(!S.walking) return {dx:0,dz:0,swing:false};
+  const phase=(S.t/S.period)%1;
+  const groupA=CFG.TRIPOD_A.indexOf(i)>=0;
+  const local=groupA?phase:(phase+0.5)%1;
+  if(local<0.5){
+    const s=local/0.5;
+    return {dx:-S.stride/2+s*S.stride, dz:S.lift*Math.sin(Math.PI*s), swing:true};
+  }
+  const s=(local-0.5)/0.5;
+  return {dx:S.stride/2-s*S.stride, dz:0, swing:false};
+}
+
+function solveLeg(i){
+  const L=CFG.LEGS[i], g=gait(i);
+  const foot=[S.stance*Math.cos(L.r)+g.dx, S.stance*Math.sin(L.r), g.dz];
+  const C=[CFG.BODY_R*Math.cos(L.r), CFG.BODY_R*Math.sin(L.r), S.height];
+  const dx=foot[0]-C[0], dy=foot[1]-C[1], dz=foot[2]-C[2];
+  const cm=Math.cos(L.r), sm=Math.sin(L.r);
+  const ik=legIK(dx*cm+dy*sm, -dx*sm+dy*cm, dz);
+  const phi=L.r+ik.coxa;
+  const F=[C[0]+CFG.COXA*Math.cos(phi), C[1]+CFG.COXA*Math.sin(phi), C[2]];
+  const cf=Math.cos(ik.femur), sf=Math.sin(ik.femur);
+  const K=[F[0]+CFG.FEMUR*cf*Math.cos(phi), F[1]+CFG.FEMUR*cf*Math.sin(phi),
+           F[2]+CFG.FEMUR*sf];
+  const pt=ik.femur+ik.tibia, cp=Math.cos(pt), sp=Math.sin(pt);
+  const E=[K[0]+CFG.TIBIA*cp*Math.cos(phi), K[1]+CFG.TIBIA*cp*Math.sin(phi),
+           K[2]+CFG.TIBIA*sp];
+  return {C,F,K,E,ik,g};
+}
+
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let cx=0, cy=0, scale=600, cssW=0, cssH=430;
+
+function project(p){
+  const ca=Math.cos(S.az), sa=Math.sin(S.az);
+  const x=p[0]*ca-p[1]*sa, y=p[0]*sa+p[1]*ca, z=p[2];
+  const ce=Math.cos(S.el), se=Math.sin(S.el);
+  return {x:x, y:y*se+z*ce, depth:y*ce-z*se};
+}
+const SX=p=>cx+project(p).x*scale;
+const SY=p=>cy-project(p).y*scale;
+
+function line(a,b,col,w){
+  ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(SX(a),SY(a)); ctx.lineTo(SX(b),SY(b)); ctx.stroke();
+}
+function dot(p,r,col){
+  ctx.fillStyle=col; ctx.beginPath();
+  ctx.arc(SX(p),SY(p),r,0,7); ctx.fill();
+}
+function poly(pts,fill,stroke){
+  ctx.beginPath();
+  pts.forEach((p,i)=>{ const X=SX(p),Y=SY(p); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); });
+  ctx.closePath();
+  if(fill){ ctx.fillStyle=fill; ctx.fill(); }
+  if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=1; ctx.stroke(); }
+}
+
+function drawGround(){
+  const lim=0.55, step=0.05;
+  const off=((S.bodyX%step)+step)%step;
+  ctx.lineWidth=1;
+  for(let gx=-lim; gx<=lim+1e-6; gx+=step){
+    const x=gx-off;
+    ctx.strokeStyle = Math.abs(((x+S.bodyX)%0.25))<0.01 ? '#ddd9cf' : '#ece9e0';
+    line([x,-0.42,0],[x,0.42,0],ctx.strokeStyle,1);
+  }
+  for(let gy=-0.40; gy<=0.40+1e-6; gy+=step){
+    line([-lim,gy,0],[lim,gy,0],'#ece9e0',1);
+  }
+  // forward (+X) arrow
+  ctx.strokeStyle='#c7c2b6'; ctx.fillStyle='#c7c2b6'; ctx.lineWidth=2;
+  line([0.30,-0.34,0],[0.46,-0.34,0],'#c7c2b6',2);
+  const tip=[0.46,-0.34,0], h=project(tip);
+  ctx.beginPath();
+  ctx.moveTo(cx+h.x*scale,cy-h.y*scale);
+  const a1=project([0.41,-0.31,0]), a2=project([0.41,-0.37,0]);
+  ctx.lineTo(cx+a1.x*scale,cy-a1.y*scale);
+  ctx.lineTo(cx+a2.x*scale,cy-a2.y*scale);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#a8a39a'; ctx.font='12px system-ui';
+  const lp=project([0.30,-0.30,0]);
+  ctx.fillText('forward',cx+lp.x*scale,cy-lp.y*scale);
+}
+
+function drawBody(){
+  const top=[],bot=[];
+  for(let i=0;i<6;i++){
+    const a=CFG.LEGS[i].r, R=CFG.BODY_R;
+    top.push([R*Math.cos(a),R*Math.sin(a),S.height+CFG.BODY_H]);
+    bot.push([R*Math.cos(a),R*Math.sin(a),S.height-CFG.BODY_H]);
+  }
+  const faces=[];
+  for(let i=0;i<6;i++){
+    const j=(i+1)%6, q=[bot[i],bot[j],top[j],top[i]];
+    let d=0; q.forEach(p=>d+=project(p).depth);
+    faces.push({q,d:d/4});
+  }
+  faces.sort((a,b)=>b.d-a.d);
+  faces.forEach(f=>poly(f.q,'#5b5950','#4a4940'));
+  poly(top,'#747166','#565449');
+}
+
+function drawShadow(p){
+  const e=project([p[0],p[1],0]);
+  ctx.fillStyle='rgba(70,66,58,0.13)';
+  ctx.beginPath();
+  ctx.ellipse(cx+e.x*scale,cy-e.y*scale,11,5,0,0,7);
+  ctx.fill();
+}
+
+function drawLeg(L){
+  const ok=L.ik.reach;
+  if(!ok){
+    line(L.C,L.F,'#cf7a5a',6); line(L.F,L.K,'#cf7a5a',6);
+    line(L.K,L.E,'#cf7a5a',6);
+    dot(L.C,4,'#993c1d'); dot(L.E,6,'#993c1d');
+    return;
+  }
+  if(!L.g.swing) drawShadow(L.E);
+  line(L.C,L.F,'#9a948a',7);
+  line(L.F,L.K,'#1d9e75',7);
+  line(L.K,L.E,'#2f7ed8',6.5);
+  dot(L.C,4.5,'#3a3934');
+  dot(L.F,4,'#2c2c2a');
+  dot(L.K,4,'#2c2c2a');
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+  dot(L.E, L.g.swing?6.5:7, L.g.swing?'#e8895f':'#d85a30');
+  ctx.beginPath(); ctx.arc(SX(L.E),SY(L.E),L.g.swing?6.5:7,0,7); ctx.stroke();
+}
+
+function resize(){
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  cssW=cv.clientWidth; cssH=cv.clientHeight;
+  cv.width=cssW*dpr; cv.height=cssH*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function render(){
+  ctx.clearRect(0,0,cssW,cssH);
+  scale = clamp(cssW/1.18, 360, 780);
+  cx=cssW/2; cy=cssH*0.60;
+  drawGround();
+  const legs=CFG.LEGS.map((_,i)=>solveLeg(i));
+  const bd=project([0,0,S.height]).depth;
+  const ord=legs.map((L,i)=>({i,d:project(L.E).depth})).sort((a,b)=>b.d-a.d);
+  ord.filter(o=>o.d>bd).forEach(o=>drawLeg(legs[o.i]));
+  drawBody();
+  ord.filter(o=>o.d<=bd).forEach(o=>drawLeg(legs[o.i]));
+  updateReadout(legs);
+}
+
+const tbody=document.getElementById('tbody');
+CFG.LEGS.forEach((L,i)=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>'+L.n+'</td><td id="c'+i+'">-</td><td id="f'+i+
+    '">-</td><td id="t'+i+'">-</td><td id="p'+i+'">-</td>';
+  tbody.appendChild(tr);
+});
+
+function updateReadout(legs){
+  let bad=0;
+  legs.forEach((L,i)=>{
+    const deg=a=>(a*R2D).toFixed(0)+'°';
+    document.getElementById('c'+i).textContent=deg(L.ik.coxa);
+    document.getElementById('f'+i).textContent=deg(L.ik.femur);
+    document.getElementById('t'+i).textContent=deg(L.ik.tibia);
+    const pc=document.getElementById('p'+i);
+    if(!L.ik.reach){ pc.innerHTML='<span class="tag tSwing">no reach</span>'; bad++; }
+    else if(L.g.swing) pc.innerHTML='<span class="tag tSwing">swing</span>';
+    else pc.innerHTML='<span class="tag tStance">stance</span>';
+  });
+  const aSwing = S.walking && legs[0].g.swing;
+  const bSwing = S.walking && legs[1].g.swing;
+  document.getElementById('stA').textContent = aSwing?'swinging':'on the ground';
+  document.getElementById('stB').textContent = bSwing?'swinging':'on the ground';
+  document.getElementById('gtxt').textContent = S.walking
+    ? 'walking forward · '+(1/S.period).toFixed(1)+' cycles/s'
+    : 'standing still — press Walk';
+  const rb=document.getElementById('reach');
+  if(bad){ rb.className='badge bad';
+    rb.textContent=bad+' leg'+(bad>1?'s':'')+' cannot reach — ease the stance'; }
+  else { rb.className='badge ok'; rb.textContent='All six feet reachable'; }
+}
+
+function frame(ts){
+  const dt=Math.min(0.05,(ts-(S.last||ts))/1000); S.last=ts;
+  if(S.walking){ S.t+=dt; S.bodyX+=(2*S.stride/S.period)*dt; }
+  render();
+  requestAnimationFrame(frame);
+}
+
+// ---- controls ----
+function bind(id,vid,fn,dec){
+  const el=document.getElementById(id), out=document.getElementById(vid);
+  const upd=()=>{ fn(parseFloat(el.value));
+    out.textContent=parseFloat(el.value).toFixed(dec); };
+  el.addEventListener('input',upd); upd();
+}
+bind('sH','vH',v=>S.height=v/100,1);
+bind('sS','vS',v=>S.stance=v/100/2,0);
+bind('sP','vP',v=>S.period=v,1);
+bind('sL','vL',v=>S.lift=v/100,1);
+
+const bWalk=document.getElementById('bWalk');
+bWalk.addEventListener('click',()=>{
+  S.walking=!S.walking;
+  bWalk.classList.toggle('on',S.walking);
+  bWalk.textContent=S.walking?'Stop':'Walk';
+  if(!S.walking){ S.t=0; }
+});
+document.getElementById('bView').addEventListener('click',()=>{
+  S.az=VIEW0.az; S.el=VIEW0.el;
+});
+function setSlider(id,vid,val,dec){
+  const el=document.getElementById(id);
+  el.value=val; el.dispatchEvent(new Event('input'));
+}
+document.querySelectorAll('[data-preset]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const p=b.dataset.preset;
+    if(p==='stand'){ setSlider('sH','vH',7.5); setSlider('sS','vS',40); }
+    if(p==='crouch'){ setSlider('sH','vH',5.2); setSlider('sS','vS',42); }
+    if(p==='tall'){ setSlider('sH','vH',9.8); setSlider('sS','vS',37); }
+  });
+});
+
+// ---- orbit drag ----
+let drag=false, px=0, py=0;
+function down(x,y){ drag=true; px=x; py=y; }
+function move(x,y){
+  if(!drag) return;
+  S.az -= (x-px)*0.011;
+  S.el = clamp(S.el+(y-py)*0.009, -8*D2R, 82*D2R);
+  px=x; py=y;
+}
+cv.addEventListener('mousedown',e=>down(e.clientX,e.clientY));
+window.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
+window.addEventListener('mouseup',()=>drag=false);
+cv.addEventListener('touchstart',e=>{const t=e.touches[0];down(t.clientX,t.clientY);},{passive:true});
+cv.addEventListener('touchmove',e=>{const t=e.touches[0];move(t.clientX,t.clientY);e.preventDefault();},{passive:false});
+cv.addEventListener('touchend',()=>drag=false);
+
+window.addEventListener('resize',resize);
+resize();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

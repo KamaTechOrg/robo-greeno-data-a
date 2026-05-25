@@ -1,0 +1,131 @@
+<mujoco model="robo_greeno_hexapod">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.002" integrator="implicitfast" gravity="0 0 -9.81"/>
+
+  <default>
+    <joint damping="0.14" armature="0.012"/>
+    <geom friction="1.1 0.06 0.01" density="700"/>
+  </default>
+
+  <visual>
+    <headlight diffuse="0.5 0.5 0.5" ambient="0.4 0.4 0.4"/>
+    <rgba haze="0.95 0.95 0.93 1"/>
+  </visual>
+
+  <worldbody>
+    <light pos="0 0 1.4" dir="0 0 -1" diffuse="0.7 0.7 0.7"/>
+    <geom name="ground" type="plane" size="3 3 0.1" rgba="0.92 0.91 0.87 1"/>
+
+    <body name="trunk" pos="0 0 0.0750">
+      <freejoint name="trunk"/>
+      <geom name="trunk" type="cylinder" size="0.1000 0.0180"
+            mass="0.45" rgba="0.36 0.35 0.33 1"/>
+      <site name="trunk_center" pos="0 0 0" size="0.01"/>
+      <body name="front_left_coxa" pos="0.070711 0.070711 0" euler="0 0 0.785398">
+        <joint name="front_left_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="front_left_femur" pos="0.040000 0 0">
+          <joint name="front_left_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="front_left_tibia" pos="0.080000 0 0">
+            <joint name="front_left_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="front_left_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="front_left_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+      <body name="mid_left_coxa" pos="0.000000 0.100000 0" euler="0 0 1.570796">
+        <joint name="mid_left_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="mid_left_femur" pos="0.040000 0 0">
+          <joint name="mid_left_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="mid_left_tibia" pos="0.080000 0 0">
+            <joint name="mid_left_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="mid_left_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="mid_left_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+      <body name="back_left_coxa" pos="-0.070711 0.070711 0" euler="0 0 2.356194">
+        <joint name="back_left_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="back_left_femur" pos="0.040000 0 0">
+          <joint name="back_left_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="back_left_tibia" pos="0.080000 0 0">
+            <joint name="back_left_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="back_left_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="back_left_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+      <body name="back_right_coxa" pos="-0.070711 -0.070711 0" euler="0 0 -2.356194">
+        <joint name="back_right_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="back_right_femur" pos="0.040000 0 0">
+          <joint name="back_right_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="back_right_tibia" pos="0.080000 0 0">
+            <joint name="back_right_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="back_right_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="back_right_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+      <body name="mid_right_coxa" pos="0.000000 -0.100000 0" euler="0 0 -1.570796">
+        <joint name="mid_right_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="mid_right_femur" pos="0.040000 0 0">
+          <joint name="mid_right_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="mid_right_tibia" pos="0.080000 0 0">
+            <joint name="mid_right_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="mid_right_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="mid_right_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+      <body name="front_right_coxa" pos="0.070711 -0.070711 0" euler="0 0 -0.785398">
+        <joint name="front_right_coxa" axis="0 0 1" range="-0.872665 0.872665"/>
+        <geom type="capsule" fromto="0 0 0 0.040000 0 0" size="0.012" rgba="0.60 0.58 0.54 1"/>
+        <body name="front_right_femur" pos="0.040000 0 0">
+          <joint name="front_right_femur" axis="0 -1 0" range="-1.570796 2.094395"/>
+          <geom type="capsule" fromto="0 0 0 0.080000 0 0" size="0.010" rgba="0.11 0.62 0.46 1"/>
+          <body name="front_right_tibia" pos="0.080000 0 0">
+            <joint name="front_right_tibia" axis="0 -1 0" range="-2.967060 0.349066"/>
+            <geom type="capsule" fromto="0 0 0 0.130000 0 0" size="0.008" rgba="0.18 0.49 0.85 1"/>
+            <geom name="front_right_foot" type="sphere" pos="0.130000 0 0" size="0.012000" rgba="0.85 0.35 0.19 1"/>
+            <site name="front_right_foot" pos="0.130000 0 0" size="0.006"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="front_left_coxa" joint="front_left_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="front_left_femur" joint="front_left_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="front_left_tibia" joint="front_left_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+    <position name="mid_left_coxa" joint="mid_left_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="mid_left_femur" joint="mid_left_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="mid_left_tibia" joint="mid_left_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+    <position name="back_left_coxa" joint="back_left_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="back_left_femur" joint="back_left_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="back_left_tibia" joint="back_left_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+    <position name="back_right_coxa" joint="back_right_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="back_right_femur" joint="back_right_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="back_right_tibia" joint="back_right_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+    <position name="mid_right_coxa" joint="mid_right_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="mid_right_femur" joint="mid_right_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="mid_right_tibia" joint="mid_right_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+    <position name="front_right_coxa" joint="front_right_coxa" kp="18.0" ctrlrange="-0.872665 0.872665"/>
+    <position name="front_right_femur" joint="front_right_femur" kp="30.0" ctrlrange="-1.570796 2.094395"/>
+    <position name="front_right_tibia" joint="front_right_tibia" kp="30.0" ctrlrange="-2.967060 0.349066"/>
+  </actuator>
+</mujoco>

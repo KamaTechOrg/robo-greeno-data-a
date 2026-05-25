@@ -1,0 +1,3 @@
+# Robo-Greeno hexapod runner -- one dependency.
+#   pip install -r requirements.txt
+mujoco>=3.0
