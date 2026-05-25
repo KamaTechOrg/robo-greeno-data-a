@@ -6,6 +6,17 @@ KamaTechOrg · Robo-Greeno Data A · 2026
 
 _One paragraph: your year, background, what drew you to this project._
 
+## My assignment
+
+**Problem B — Turn in place.** The robot spins on the spot using the
+same alternating tripod rhythm — a stance foot traces an arc instead
+of a straight line. Builds on the `tripod-walk` demo.
+
+→ Full spec: [`PhantomX/assignments/problem-b-turn-in-place.md`](../PhantomX/assignments/problem-b-turn-in-place.md)
+Starting point: [`PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+Deliver: a `turn-in-place/` folder with `demo_turn_in_place.py`, a
+`--check`, a short README, and a screen recording.
+
 ## My weekly log
 
 - **Week 1 (2026-05-18):** [ ] Read `PLAN.md`. Edit this README → fill in "About me". Reply to the Week 1 issue with a link to your commit.

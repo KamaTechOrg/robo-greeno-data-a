@@ -6,6 +6,17 @@ KamaTechOrg · Robo-Greeno Data A · 2026
 
 _One paragraph: your year, background, what drew you to this project._
 
+## My assignment
+
+**Problem A — Body-pose control.** All six feet stay planted; the body
+rises, lowers, pitches and rolls in a smooth routine. Builds on the
+`pose-wave` demo.
+
+→ Full spec: [`PhantomX/assignments/problem-a-body-pose.md`](../PhantomX/assignments/problem-a-body-pose.md)
+Starting point: [`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
+Deliver: a `body-pose/` folder with `demo_body_pose.py`, a `--check`,
+a short README, and a screen recording.
+
 ## My weekly log
 
 - **Week 1 (2026-05-18):** [ ] Read `PLAN.md`. Edit this README → fill in "About me". Reply to the Week 1 issue with a link to your commit.
