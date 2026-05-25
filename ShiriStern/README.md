@@ -6,6 +6,24 @@ KamaTechOrg · Robo-Greeno Data A · 2026
 
 _One paragraph: your year, background, what drew you to this project._
 
+## My assignment — Problem D: The wave gait
+
+→ **Full spec, here in this folder:** [`Problem-D-Wave-Gait.md`](./Problem-D-Wave-Gait.md)
+
+A slower, steadier walk where legs step one at a time instead of
+three at once. You change only the per-leg timing offsets — and end
+with two demos side by side (tripod vs wave) for direct comparison.
+Builds on the [`PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+demo.
+
+**Deliver:** a `wave-walk/` folder with `demo_wave_walk.py`, a
+`--check`, a short README (with a one-sentence tripod-vs-wave
+comparison), and a screen recording.
+
+(One of four matched-difficulty problems posted in
+[`../PhantomX/assignments/`](../PhantomX/assignments/) — two posing,
+two locomotion. This is a locomotion problem, peer to Shira's.)
+
 ## My weekly log
 
 - **Week 1 (2026-05-18):** [ ] Read `PLAN.md`. Edit this README → fill in "About me". Reply to the Week 1 issue with a link to your commit.

@@ -6,6 +6,21 @@ KamaTechOrg · Robo-Greeno Data A · 2026
 
 _One paragraph: your year, background, what drew you to this project._
 
+## My assignment — Problem C: Draw a shape in the air
+
+→ **Full spec, here in this folder:** [`Problem-C-Draw-Shape.md`](./Problem-C-Draw-Shape.md)
+
+The robot stands on five legs while the sixth lifts off and traces a
+circle, a square, and a figure-eight in the air. Builds on the
+[`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/) demo.
+
+**Deliver:** a `draw-shape/` folder with `demo_draw_shape.py`, a
+`--check`, a short README, and a screen recording.
+
+(One of four matched-difficulty problems posted in
+[`../PhantomX/assignments/`](../PhantomX/assignments/) — two posing,
+two locomotion. This is a posing problem, peer to Hadas's.)
+
 ## My weekly log
 
 - **Week 1 (2026-05-18):** [ ] Read `PLAN.md`. Edit this README → fill in "About me". Reply to the Week 1 issue with a link to your commit.
