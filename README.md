@@ -30,7 +30,7 @@ Selected for student laptops + free GPU credits. No expensive lab HW.
 - **Parallel RL:** [MuJoCo MJX](https://github.com/google-deepmind/mujoco/tree/main/mjx)
   on free Google Colab T4 (for the Wk 6-8 phase)
 - **Filters:** Madgwick / Mahony AHRS for IMU fusion
-- **Target hardware:** ESP32 (~$4) for low-level motion + IMU, Raspberry
+- **Target hardware:** ESP32 (~\$4) for low-level motion + IMU, Raspberry
   Pi 4/5 for on-device inference and BLE coordination
 
 See [`PLAN.md`](PLAN.md) for the 10-week phase plan and
@@ -46,12 +46,12 @@ robo-greeno-data-a/
 ├── CONTRIBUTING.md    how participants and TAs work in this repo
 ├── LICENSE            MIT
 └── docs/
+    ├── tutorial/      Physical AI tutorial (published to GitHub Pages)
     └── sketches/      design notes and origin material
 ```
 
-Code lands week by week as each phase is taught — empty here on Day 1
-is intentional. The participants build the labs; the mentor seeds the
-plan.
+Code lands week by week as each phase is taught. The participants build
+the labs; the mentor seeds the plan.
 
 ## Bootcamp pipeline
 
@@ -70,6 +70,33 @@ as TAs in the next bootcamp.
 - **Data B** (mentor: Scot): aligned timestamp and body-frame
   conventions on relative-pose output so vision-based mapping fuses
   cleanly with camera frames.
+
+## Citing this work
+
+If you use this repository in research or teaching, please cite it.
+GitHub's **"Cite this repository"** button (top right of the repo page,
+powered by [`CITATION.cff`](CITATION.cff)) gives APA and BibTeX. Or:
+
+```bibtex
+@software{robo_greeno_data_a_2026,
+  author  = {Koh, Ingyu and {KamaTech Robo-Greeno Data A Team}},
+  title   = {Robo-Greeno Data A: Hexapod Kinematics, Gait Generation,
+             and RL Locomotion for Agricultural Spider Robots},
+  year    = {2026},
+  url     = {https://github.com/KamaTechOrg/robo-greeno-data-a},
+  license = {MIT},
+  version = {0.1.0}
+}
+```
+
+A version-pinned DOI via Zenodo is planned for the first tagged release.
+
+## Physical AI tutorial
+
+An intuitive 4-chapter tutorial — *LLM AI vs Physical AI*, *Legs and
+fingers in nature*, *MuJoCo without tears*, and *RL, intuitively* —
+lives in [`docs/tutorial/`](docs/tutorial/) and is published at
+<https://kamatechorg.github.io/robo-greeno-data-a/>.
 
 ## License
 
