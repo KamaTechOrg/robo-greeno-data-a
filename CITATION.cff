@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Robo-Greeno Data A: Hexapod Kinematics, Gait Generation, and RL Locomotion for Agricultural Spider Robots"
+type: software
+authors:
+  - family-names: Koh
+    given-names: Ingyu
+    affiliation: "KamaTech, Robo-Greeno project (Data A mentor)"
+  - name: "KamaTech Robo-Greeno Data A Team"
+repository-code: "https://github.com/KamaTechOrg/robo-greeno-data-a"
+url: "https://kamatechorg.github.io/robo-greeno-data-a/"
+license: MIT
+date-released: 2026-05-06
+version: 0.1.0
+keywords:
+  - physical-ai
+  - hexapod
+  - robotics
+  - mujoco
+  - reinforcement-learning
+  - gait-generation
+  - agricultural-robotics
+abstract: >-
+  Open-source workspace for the Data A track of the KamaTech Robo-Greeno
+  project: a swarm of six-legged spider robots for agricultural settings.
+  Covers hexapod kinematics, tripod/wave/ripple gait generation, IMU
+  stabilization, and reinforcement-learning locomotion in MuJoCo, targeting
+  ESP32 + Raspberry Pi class hardware. Includes an intuitive Physical AI
+  tutorial series.
+# After the first Zenodo release, add:
+# doi: 10.5281/zenodo.XXXXXXX
