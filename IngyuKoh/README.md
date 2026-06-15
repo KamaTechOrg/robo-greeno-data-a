@@ -14,7 +14,11 @@ feel free to copy/adapt.
 - **Week 2 (2026-05-25):** [ ] Demo: run `notebooks/leg_kinematics_colab.ipynb`.
 - **Week 3 (2026-06-01):** [ ] Demo: `notebooks/robo_greeno_3plus3_colab.ipynb` walking gait.
 - **Week 4 (2026-06-08):** [ ] Demo: SB3 training loop using `RL/hexapod_env.py`.
-- **Week 5 (2026-06-15):** [ ] One-on-one feedback round with each student.
+- **Week 5 (2026-06-15):** [x] One-on-one feedback round with each student.
+
+## Demo recordings
+
+- **Wave-walk demo (Loom):** https://www.loom.com/share/f6e59470fcdc4c89b8f049259a3c8dac
 
 ## Contents
 
