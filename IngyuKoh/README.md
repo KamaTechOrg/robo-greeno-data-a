@@ -18,19 +18,20 @@ feel free to copy/adapt.
 
 ## Demo recordings
 
-The wave-walk demo session was screen-recorded and shared via Loom. The Loom
-recording is the single source for the demo — the **Google Meet session
-recording is contained inside the Loom video below** (screen share of the
-running demo plus the live walkthrough/discussion). Open the Loom link to watch
-the full Google Meet demo.
+The full team demo session was screen-recorded and shared via Loom. This Loom
+is the single recording for the **entire demo (all students and topics)** — the
+**Google Meet session recording is contained inside the Loom video below**
+(screen share of the running demos plus the live walkthrough/discussion). Open
+the Loom link to watch the complete Google Meet demo.
 
-This demo covers **Shiri Stern's wave-walk contribution**, merged into `main`
-via **PR [#2](https://github.com/KamaTechOrg/robo-greeno-data-a/pull/2) "add
-wave walk"** (commit `e6a3fec`). The merged code lives in
-[`ShiriStern/wave-walk/`](../ShiriStern/wave-walk).
-
-- **Wave-walk demo — Loom (contains the Google Meet recording):**
+- **Team demo — Loom (full session, contains the Google Meet recording):**
   https://www.loom.com/share/f6e59470fcdc4c89b8f049259a3c8dac
+
+One of the contributions shown in the session: **Shiri Stern's wave-walk**,
+merged into `main` via PR
+[#2](https://github.com/KamaTechOrg/robo-greeno-data-a/pull/2) "add wave walk"
+(commit `e6a3fec`) — code in
+[`ShiriStern/wave-walk/`](../ShiriStern/wave-walk).
 
 ## Contents
 
