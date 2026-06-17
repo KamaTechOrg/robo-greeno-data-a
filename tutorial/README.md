@@ -22,4 +22,4 @@ In a hurry and only care about *"how do robots learn to walk?"* → jump to **[C
 
 ---
 
-*Part of [Robo-Greeno — Data A](../../README.md). Runnable notebooks live in [`notebooks/`](../../notebooks).*
+*Part of [Robo-Greeno — Data A](../README.md). Runnable notebooks live in [`notebooks/`](../notebooks).*

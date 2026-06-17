@@ -5,7 +5,7 @@ description: >-
   — explained for beginners.
 ---
 
-> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; **Ch 1 — LLM vs Physical AI** &nbsp;·&nbsp; [Ch 2 ▶](02-legs-and-fingers.md)
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; **Ch 1 — LLM vs Physical AI** &nbsp;·&nbsp; [Ch 2 ▶](02-legs-and-fingers.md)
 
 # Chapter 1 — LLM AI vs Physical AI
 
@@ -104,4 +104,4 @@ and the real robot it targets costs roughly \$100 in parts.
 
 ---
 
-[🏠 Tutorial Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 2 — Legs & Fingers ▶**](02-legs-and-fingers.md)
+[🏠 Tutorial Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 2 — Legs & Fingers ▶**](02-legs-and-fingers.md)

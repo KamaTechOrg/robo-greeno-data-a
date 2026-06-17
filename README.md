@@ -18,12 +18,12 @@ A four-chapter, beginner-friendly intro to Physical AI, taught through this
 hexapod. **Reads right here on GitHub** — clickable navigation, diagrams,
 and callouts, no website or build step needed:
 
-1. **[LLM AI vs Physical AI](docs/tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
-2. **[Legs and Fingers — Nature's Engineering](docs/tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
-3. **[MuJoCo Without Tears](docs/tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works.
-4. **[Reinforcement Learning, Intuitively](docs/tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, sim-to-real.
+1. **[LLM AI vs Physical AI](tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
+2. **[Legs and Fingers — Nature's Engineering](tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
+3. **[MuJoCo Without Tears](tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works.
+4. **[Reinforcement Learning, Intuitively](tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, sim-to-real.
 
-→ **[Tutorial overview & how to read](docs/tutorial/README.md)**
+→ **[Tutorial overview & how to read](tutorial/README.md)**
 
 ## Team
 
@@ -58,8 +58,8 @@ robo-greeno-data-a/
 ├── REFERENCES.md      papers, datasets, URDFs, and tutorials
 ├── CONTRIBUTING.md    how participants and TAs work in this repo
 ├── LICENSE            MIT
+├── tutorial/         Physical AI tutorial — 4 chapters, reads on GitHub
 └── docs/
-    ├── tutorial/      Physical AI tutorial (published to GitHub Pages)
     └── sketches/      design notes and origin material
 ```
 

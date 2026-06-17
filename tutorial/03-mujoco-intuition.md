@@ -5,7 +5,7 @@ description: >-
   intuitively with a hexapod robot example.
 ---
 
-> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 2](02-legs-and-fingers.md) &nbsp;·&nbsp; **Ch 3 — MuJoCo Without Tears** &nbsp;·&nbsp; [Ch 4 ▶](04-rl-intuition.md)
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [◀ Ch 2](02-legs-and-fingers.md) &nbsp;·&nbsp; **Ch 3 — MuJoCo Without Tears** &nbsp;·&nbsp; [Ch 4 ▶](04-rl-intuition.md)
 
 # Chapter 3 — MuJoCo Without Tears
 
@@ -139,4 +139,4 @@ photorealistic rendering, heavy GPU requirements. For learning to
 
 ---
 
-[◀ Chapter 2](02-legs-and-fingers.md) &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 4 — Reinforcement Learning ▶**](04-rl-intuition.md)
+[◀ Chapter 2](02-legs-and-fingers.md) &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 4 — Reinforcement Learning ▶**](04-rl-intuition.md)

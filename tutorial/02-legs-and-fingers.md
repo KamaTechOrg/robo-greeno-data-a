@@ -5,7 +5,7 @@ description: >-
   builders — and why hexapods are the best first robot.
 ---
 
-> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; **Ch 2 — Legs & Fingers** &nbsp;·&nbsp; [Ch 3 ▶](03-mujoco-intuition.md)
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [◀ Ch 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; **Ch 2 — Legs & Fingers** &nbsp;·&nbsp; [Ch 3 ▶](03-mujoco-intuition.md)
 
 # Chapter 2 — Legs and Fingers: Nature's Engineering
 
@@ -98,4 +98,4 @@ nature just never evolved a good axle.
 
 ---
 
-[◀ Chapter 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 3 — MuJoCo ▶**](03-mujoco-intuition.md)
+[◀ Chapter 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 3 — MuJoCo ▶**](03-mujoco-intuition.md)

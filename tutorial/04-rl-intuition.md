@@ -5,7 +5,7 @@ description: >-
   all through teaching a hexapod robot to walk.
 ---
 
-> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 3](03-mujoco-intuition.md) &nbsp;·&nbsp; **Ch 4 — Reinforcement Learning** &nbsp;·&nbsp; 🏁 Final chapter
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [◀ Ch 3](03-mujoco-intuition.md) &nbsp;·&nbsp; **Ch 4 — Reinforcement Learning** &nbsp;·&nbsp; 🏁 Final chapter
 
 # Chapter 4 — Reinforcement Learning, Intuitively
 
@@ -137,6 +137,6 @@ it, eventually. Start by training one and watching what it does.
 
 ---
 
-[◀ Chapter 3](03-mujoco-intuition.md) &nbsp;·&nbsp; [🏠 Tutorial Overview](index.md) &nbsp;·&nbsp; [📦 Repository](https://github.com/KamaTechOrg/robo-greeno-data-a)
+[◀ Chapter 3](03-mujoco-intuition.md) &nbsp;·&nbsp; [🏠 Tutorial Overview](README.md) &nbsp;·&nbsp; [📦 Repository](https://github.com/KamaTechOrg/robo-greeno-data-a)
 
-🎉 **You finished the tutorial.** Next: open the runnable notebooks in [`notebooks/`](../../notebooks) and train a hexapod yourself.
+🎉 **You finished the tutorial.** Next: open the runnable notebooks in [`notebooks/`](../notebooks) and train a hexapod yourself.
