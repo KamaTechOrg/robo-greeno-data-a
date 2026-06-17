@@ -96,6 +96,13 @@ No — they steal *principles* (tripod stability, hydraulic extension,
 tendon routing), not blueprints. Wheels beat legs on flat ground;
 nature just never evolved a good axle.
 
+## Further reading
+
+- Raibert, M. H. (1986). *Legged Robots That Balance*. MIT Press. — the foundational text on dynamic legged locomotion.
+- Full, R. J., & Koditschek, D. E. (1999). "Templates and anchors: neuromechanical hypotheses of legged locomotion on land." *Journal of Experimental Biology*, 202(23), 3325–3332.
+
+📑 **Cite this tutorial:** see [How to cite](README.md#how-to-cite).
+
 ---
 
 [◀ Chapter 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 3 — MuJoCo ▶**](03-mujoco-intuition.md)

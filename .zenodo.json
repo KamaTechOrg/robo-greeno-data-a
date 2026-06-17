@@ -1,0 +1,23 @@
+{
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "title": "Robo-Greeno Data A: Hexapod Kinematics, Gait Generation, and RL Locomotion for Agricultural Spider Robots",
+  "description": "Open-source workspace and an intuitive Physical AI tutorial for the Data A track of the KamaTech Robo-Greeno project: a swarm of six-legged spider robots for agricultural settings. Covers hexapod kinematics, tripod/wave/ripple gait generation, IMU stabilization, MuJoCo physics simulation, and reinforcement-learning locomotion, targeting ESP32 + Raspberry Pi class hardware. Includes a four-chapter beginner tutorial on LLMs vs embodied AI, leg design in nature, MuJoCo, and reinforcement learning.",
+  "creators": [
+    { "name": "Koh, Ingyu", "affiliation": "KamaTech, Robo-Greeno project (Data A mentor)" },
+    { "name": "KamaTech Robo-Greeno Data A Team" }
+  ],
+  "keywords": [
+    "physical-ai",
+    "hexapod",
+    "robotics",
+    "mujoco",
+    "reinforcement-learning",
+    "gait-generation",
+    "agricultural-robotics",
+    "sim-to-real",
+    "legged-locomotion",
+    "tutorial"
+  ]
+}

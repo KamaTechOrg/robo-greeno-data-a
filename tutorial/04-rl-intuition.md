@@ -135,6 +135,15 @@ that order.
 To use it, no — Stable-Baselines3 is three lines of code. To research
 it, eventually. Start by training one and watching what it does.
 
+## Further reading
+
+- Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction* (2nd ed.). MIT Press. — the standard RL textbook.
+- Schulman, J., Wolski, F., Dhariwal, P., Radford, A., & Klimov, O. (2017). "Proximal Policy Optimization Algorithms." *arXiv:1707.06347*. — the PPO paper.
+- Raffin, A., et al. (2021). "Stable-Baselines3: Reliable Reinforcement Learning Implementations." *JMLR*, 22(268). — the library used here.
+- Tobin, J., et al. (2017). "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World." *IEEE/RSJ IROS 2017*. — the sim-to-real technique.
+
+📑 **Cite this tutorial:** see [How to cite](README.md#how-to-cite).
+
 ---
 
 [◀ Chapter 3](03-mujoco-intuition.md) &nbsp;·&nbsp; [🏠 Tutorial Overview](README.md) &nbsp;·&nbsp; [📦 Repository](https://github.com/KamaTechOrg/robo-greeno-data-a)

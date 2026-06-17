@@ -137,6 +137,13 @@ Gazebo: deep ROS integration for systems work. Isaac Sim:
 photorealistic rendering, heavy GPU requirements. For learning to
 *walk*, MuJoCo is the standard.
 
+## Further reading
+
+- Todorov, E., Erez, T., & Tassa, Y. (2012). "MuJoCo: A physics engine for model-based control." *IEEE/RSJ IROS 2012*, 5026–5033. — the MuJoCo paper.
+- MuJoCo documentation — <https://mujoco.readthedocs.io>.
+
+📑 **Cite this tutorial:** see [How to cite](README.md#how-to-cite).
+
 ---
 
 [◀ Chapter 2](02-legs-and-fingers.md) &nbsp;·&nbsp; [🏠 Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 4 — Reinforcement Learning ▶**](04-rl-intuition.md)

@@ -102,6 +102,13 @@ or inertia.
 No. This entire project runs in simulation on a free Google Colab GPU,
 and the real robot it targets costs roughly \$100 in parts.
 
+## Further reading
+
+- Moravec, H. (1988). *Mind Children: The Future of Robot and Human Intelligence*. Harvard University Press. — origin of Moravec's paradox.
+- Brooks, R. A. (1990). "Elephants Don't Play Chess." *Robotics and Autonomous Systems*, 6(1–2), 3–15. — the case for embodied intelligence.
+
+📑 **Cite this tutorial:** see [How to cite](README.md#how-to-cite).
+
 ---
 
 [🏠 Tutorial Overview](README.md) &nbsp;·&nbsp; [**Next: Chapter 2 — Legs & Fingers ▶**](02-legs-and-fingers.md)
