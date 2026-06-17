@@ -5,6 +5,8 @@ description: >-
   builders — and why hexapods are the best first robot.
 ---
 
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; **Ch 2 — Legs & Fingers** &nbsp;·&nbsp; [Ch 3 ▶](03-mujoco-intuition.md)
+
 # Chapter 2 — Legs and Fingers: Nature's Engineering
 
 Nature has been running the world's longest robotics competition for
@@ -72,13 +74,11 @@ the plan, after walking is solved.
 | Human | 2 | Constantly | Speed, efficiency, free hands | Hard mode — needs fast feedback |
 | Hands | 10 fingers | — | Manipulation | The next frontier after walking |
 
-!!! abstract "Key takeaways"
-    - Six legs + tripod gait = static stability: the robot never has
-      to balance, so beginners can iterate safely.
-    - More legs buy redundancy; fewer legs buy speed and efficiency
-      but demand fast closed-loop control.
-    - Manipulation (fingers) is harder than locomotion (legs) — solve
-      walking first.
+> [!NOTE]
+> **Key takeaways**
+> - Six legs + tripod gait = static stability: the robot never has to balance, so beginners can iterate safely.
+> - More legs buy redundancy; fewer legs buy speed and efficiency but demand fast closed-loop control.
+> - Manipulation (fingers) is harder than locomotion (legs) — solve walking first.
 
 ## FAQ
 
@@ -98,4 +98,4 @@ nature just never evolved a good axle.
 
 ---
 
-*Next: [Chapter 3 — MuJoCo Without Tears](03-mujoco-intuition.md)*
+[◀ Chapter 1](01-llm-vs-physical-ai.md) &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 3 — MuJoCo ▶**](03-mujoco-intuition.md)

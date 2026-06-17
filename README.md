@@ -12,6 +12,19 @@ generation, IMU stabilization, and reinforcement-learning locomotion in
 simulation, with a focus on policies that fit ESP32 + Raspberry Pi
 class hardware.
 
+## 📖 Start here — the Physical AI Tutorial
+
+A four-chapter, beginner-friendly intro to Physical AI, taught through this
+hexapod. **Clickable right here on GitHub** (also published as a
+[styled site](https://ingyukoh.github.io/robo-greeno-data-a-1/)):
+
+1. **[LLM AI vs Physical AI](docs/tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
+2. **[Legs and Fingers — Nature's Engineering](docs/tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
+3. **[MuJoCo Without Tears](docs/tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works.
+4. **[Reinforcement Learning, Intuitively](docs/tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, sim-to-real.
+
+→ **[Tutorial overview & how to read](docs/tutorial/README.md)**
+
 ## Team
 
 - **Program director:** Shmuel Fine, [KamaTech](https://kamatech.org.il)

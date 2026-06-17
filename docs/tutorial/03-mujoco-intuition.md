@@ -5,6 +5,8 @@ description: >-
   intuitively with a hexapod robot example.
 ---
 
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 2](02-legs-and-fingers.md) &nbsp;·&nbsp; **Ch 3 — MuJoCo Without Tears** &nbsp;·&nbsp; [Ch 4 ▶](04-rl-intuition.md)
+
 # Chapter 3 — MuJoCo Without Tears
 
 ## What does a physics engine actually do?
@@ -100,15 +102,12 @@ spider learning to walk, you simulate **4,096 spiders at once** on a
 free Colab T4. That firehose of experience is exactly what
 reinforcement learning drinks — next chapter.
 
-!!! abstract "Key takeaways"
-    - A physics engine is Newton's laws integrated in tiny timesteps
-      (~2 ms).
-    - Robots are trees of bodies, connected by joints, driven by
-      actuators — 18 of each for our hexapod's legs.
-    - Contact forces are the hard, discontinuous part; MuJoCo's
-      contact solver is why it's the standard for legged robots.
-    - MJX = MuJoCo on GPU = thousands of parallel simulations = free
-      training data.
+> [!NOTE]
+> **Key takeaways**
+> - A physics engine is Newton's laws integrated in tiny timesteps (~2 ms).
+> - Robots are trees of bodies, connected by joints, driven by actuators — 18 of each for our hexapod's legs.
+> - Contact forces are the hard, discontinuous part; MuJoCo's contact solver is why it's the standard for legged robots.
+> - MJX = MuJoCo on GPU = thousands of parallel simulations = free training data.
 
 ## FAQ
 
@@ -129,4 +128,4 @@ photorealistic rendering, heavy GPU requirements. For learning to
 
 ---
 
-*Next: [Chapter 4 — Reinforcement Learning, Intuitively](04-rl-intuition.md)*
+[◀ Chapter 2](02-legs-and-fingers.md) &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 4 — Reinforcement Learning ▶**](04-rl-intuition.md)

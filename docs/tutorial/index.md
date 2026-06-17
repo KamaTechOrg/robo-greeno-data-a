@@ -21,7 +21,10 @@ runnable Colab notebook and a key-takeaways box.
    states, actions, rewards, PPO, and sim-to-real, all through one
    hexapod example.
 
-!!! tip "How to read"
-    Chapters build on each other but each stands alone. If you only
-    care about "how do robots learn to walk?", jump straight to
-    [Chapter 4](04-rl-intuition.md).
+> [!TIP]
+> **How to read** — Chapters build on each other but each stands alone. If you only
+> care about "how do robots learn to walk?", jump straight to [Chapter 4](04-rl-intuition.md).
+
+---
+
+*This tutorial renders two ways: as a styled site on [GitHub Pages](https://ingyukoh.github.io/robo-greeno-data-a-1/), and natively right here on GitHub — every link above is clickable in both.*

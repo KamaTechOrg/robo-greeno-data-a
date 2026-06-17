@@ -5,6 +5,8 @@ description: >-
   all through teaching a hexapod robot to walk.
 ---
 
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; [◀ Ch 3](03-mujoco-intuition.md) &nbsp;·&nbsp; **Ch 4 — Reinforcement Learning** &nbsp;·&nbsp; 🏁 Final chapter
+
 # Chapter 4 — Reinforcement Learning, Intuitively
 
 ## Training a puppy with treats
@@ -98,15 +100,12 @@ be small enough to run on a **Raspberry Pi** — a policy that needs a
 data center can't ride on a \$100 spider. Tiny networks (a few hundred
 KB) turn out to be plenty for walking.
 
-!!! abstract "Key takeaways"
-    - RL = puppy training: state, action, reward; the policy is a
-      neural net mapping senses to torques.
-    - Reward design, not the algorithm, is where the engineering
-      lives — the robot will exploit every loophole.
-    - PPO improves the policy in small, clipped steps so learning
-      never collapses.
-    - Domain randomization closes the sim-to-real gap by making
-      training harder than reality.
+> [!NOTE]
+> **Key takeaways**
+> - RL = puppy training: state, action, reward; the policy is a neural net mapping senses to torques.
+> - Reward design, not the algorithm, is where the engineering lives — the robot will exploit every loophole.
+> - PPO improves the policy in small, clipped steps so learning never collapses.
+> - Domain randomization closes the sim-to-real gap by making training harder than reality.
 
 ## FAQ
 
@@ -126,5 +125,6 @@ it, eventually. Start by training one and watching what it does.
 
 ---
 
-*Back to the [tutorial overview](index.md) · Project
-[repository](https://github.com/KamaTechOrg/robo-greeno-data-a)*
+[◀ Chapter 3](03-mujoco-intuition.md) &nbsp;·&nbsp; [🏠 Tutorial Overview](index.md) &nbsp;·&nbsp; [📦 Repository](https://github.com/KamaTechOrg/robo-greeno-data-a)
+
+🎉 **You finished the tutorial.** Next: open the runnable notebooks in [`notebooks/`](../../notebooks) and train a hexapod yourself.

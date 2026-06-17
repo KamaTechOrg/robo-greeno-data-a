@@ -5,6 +5,8 @@ description: >-
   — explained for beginners.
 ---
 
+> **📖 Physical AI Tutorial** &nbsp;·&nbsp; [🏠 Overview](index.md) &nbsp;·&nbsp; **Ch 1 — LLM vs Physical AI** &nbsp;·&nbsp; [Ch 2 ▶](02-legs-and-fingers.md)
+
 # Chapter 1 — LLM AI vs Physical AI
 
 ## What is Physical AI?
@@ -71,13 +73,11 @@ this gait pattern, shift weight now"). Robo-Greeno lives squarely in
 the second layer — the layer that has to be *right* 50 times per
 second.
 
-!!! abstract "Key takeaways"
-    - Physical AI outputs motor commands under hard real-time limits;
-      mistakes have irreversible physical costs.
-    - Moravec's paradox: sensorimotor control is harder than abstract
-      reasoning, because evolution optimized it longer.
-    - There's no internet-scale dataset of movement — simulation
-      generates the training data instead.
+> [!NOTE]
+> **Key takeaways**
+> - Physical AI outputs motor commands under hard real-time limits; mistakes have irreversible physical costs.
+> - Moravec's paradox: sensorimotor control is harder than abstract reasoning, because evolution optimized it longer.
+> - There's no internet-scale dataset of movement — simulation generates the training data instead.
 
 ## FAQ
 
@@ -96,4 +96,4 @@ and the real robot it targets costs roughly \$100 in parts.
 
 ---
 
-*Next: [Chapter 2 — Legs and Fingers: Nature's Engineering](02-legs-and-fingers.md)*
+[🏠 Tutorial Overview](index.md) &nbsp;·&nbsp; [**Next: Chapter 2 — Legs & Fingers ▶**](02-legs-and-fingers.md)
