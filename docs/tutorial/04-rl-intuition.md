@@ -108,6 +108,15 @@ KB) turn out to be plenty for walking.
     - Domain randomization closes the sim-to-real gap by making
       training harder than reality.
 
+## Run it yourself
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KamaTechOrg/robo-greeno-data-a/blob/main/notebooks/04_rl_walking.ipynb)
+
+An 8-minute notebook (turn on the free T4 GPU) that trains PPO twice on
+the same robot — once with a naive "go forward" reward and once with the
+shaped "negotiated treaty" — so you can *watch the naive policy exploit
+the loophole* exactly as this chapter warns.
+
 ## FAQ
 
 **How long does it take to train a hexapod to walk?**

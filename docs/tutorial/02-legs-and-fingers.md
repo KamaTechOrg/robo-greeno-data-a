@@ -80,6 +80,15 @@ the plan, after walking is solved.
     - Manipulation (fingers) is harder than locomotion (legs) — solve
       walking first.
 
+## Run it yourself
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KamaTechOrg/robo-greeno-data-a/blob/main/notebooks/02_gaits_stability.ipynb)
+
+A 2-minute notebook (no GPU, no MuJoCo) that implements the tripod, wave,
+and ripple gaits and **measures** how many feet stay on the ground in
+each — turning "six legs never have to balance" into a number you can
+see, exactly as this chapter promises.
+
 ## FAQ
 
 **Why build a hexapod instead of a humanoid or robot dog?**
