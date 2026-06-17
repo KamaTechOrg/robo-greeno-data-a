@@ -79,6 +79,15 @@ second.
     - There's no internet-scale dataset of movement — simulation
       generates the training data instead.
 
+## Run it yourself
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KamaTechOrg/robo-greeno-data-a/blob/main/notebooks/01_llm_vs_physical_ai.ipynb)
+
+A 5-minute notebook (CPU is fine) that balances an inverted pendulum in
+MuJoCo with the **same** controller at 20 ms, 200 ms, and 1000 ms
+decision rates — so you can *watch* the "LLM-speed" loop let the robot
+fall while the fast loop holds it up.
+
 ## FAQ
 
 **Is Physical AI the same as robotics?**

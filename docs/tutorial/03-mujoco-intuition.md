@@ -110,6 +110,15 @@ reinforcement learning drinks — next chapter.
     - MJX = MuJoCo on GPU = thousands of parallel simulations = free
       training data.
 
+## Run it yourself
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KamaTechOrg/robo-greeno-data-a/blob/main/notebooks/03_mujoco_hexapod.ipynb)
+
+A 4-minute notebook (CPU is fine) that generates our hexapod's 18 joints
+and 18 actuators in a `for` loop, confirms the counts, shows a 50 ms
+timestep blowing the integrator up while 2 ms stays stable, then drives
+the actuators and renders the contact solver keeping the feet down.
+
 ## FAQ
 
 **Is MuJoCo hard to learn?**
