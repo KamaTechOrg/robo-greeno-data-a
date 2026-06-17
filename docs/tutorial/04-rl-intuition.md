@@ -34,6 +34,18 @@ A **policy** is the learned mapping state → action — a small neural
 network. Training = adjusting it so total reward goes up. That's the
 whole field in one sentence.
 
+```mermaid
+flowchart LR
+    P["🧠 Policy<br/>(neural net)"] -->|"action:<br/>18 torques"| E["🌍 Environment<br/>(MuJoCo hexapod)"]
+    E -->|"state:<br/>joint angles + IMU"| P
+    E -.->|"reward:<br/>speed − penalties"| P
+    P ==>|"adjust weights<br/>to raise reward"| P
+```
+
+The loop runs ~50 times per second of simulated time, millions of times
+over, until the policy reliably turns "what I sense" into "torques that
+walk."
+
 ## Reward design is the real job
 
 Here's the dirty secret: the algorithm is a library import. The thing

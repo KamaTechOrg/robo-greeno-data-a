@@ -27,4 +27,4 @@ runnable Colab notebook and a key-takeaways box.
 
 ---
 
-*This tutorial renders two ways: as a styled site on [GitHub Pages](https://ingyukoh.github.io/robo-greeno-data-a-1/), and natively right here on GitHub — every link above is clickable in both.*
+*Every link above is clickable right here on GitHub — no website needed.*

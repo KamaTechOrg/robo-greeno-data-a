@@ -15,8 +15,8 @@ class hardware.
 ## 📖 Start here — the Physical AI Tutorial
 
 A four-chapter, beginner-friendly intro to Physical AI, taught through this
-hexapod. **Clickable right here on GitHub** (also published as a
-[styled site](https://ingyukoh.github.io/robo-greeno-data-a-1/)):
+hexapod. **Reads right here on GitHub** — clickable navigation, diagrams,
+and callouts, no website or build step needed:
 
 1. **[LLM AI vs Physical AI](docs/tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
 2. **[Legs and Fingers — Nature's Engineering](docs/tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
@@ -103,13 +103,6 @@ powered by [`CITATION.cff`](CITATION.cff)) gives APA and BibTeX. Or:
 ```
 
 A version-pinned DOI via Zenodo is planned for the first tagged release.
-
-## Physical AI tutorial
-
-An intuitive 4-chapter tutorial — *LLM AI vs Physical AI*, *Legs and
-fingers in nature*, *MuJoCo without tears*, and *RL, intuitively* —
-lives in [`docs/tutorial/`](docs/tutorial/) and is published at
-<https://kamatechorg.github.io/robo-greeno-data-a/>.
 
 ## License
 

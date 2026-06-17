@@ -3,7 +3,7 @@
 A four-chapter, beginner-friendly tour of **Physical AI** — taught through Robo-Greeno, a six-legged agricultural spider robot. Every concept gets a physical metaphor before any math. Each chapter is ~15 minutes.
 
 > [!TIP]
-> This page renders two ways, both fully clickable: as a styled site on **[GitHub Pages](https://ingyukoh.github.io/robo-greeno-data-a-1/)**, and natively **right here on GitHub**. No build step needed to read it.
+> This whole tutorial reads **natively right here on GitHub** — clickable chapter navigation, flowchart diagrams, and callout boxes, with no website or build step. Just click through.
 
 ## Chapters
 

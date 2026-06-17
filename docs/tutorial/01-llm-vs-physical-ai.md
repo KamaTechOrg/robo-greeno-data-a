@@ -73,6 +73,14 @@ this gait pattern, shift weight now"). Robo-Greeno lives squarely in
 the second layer — the layer that has to be *right* 50 times per
 second.
 
+```mermaid
+flowchart TD
+    G["🎯 Goal<br/>'inspect the tomato row'"] --> H["🧩 High-level reasoning<br/>(LLM-class) — seconds OK"]
+    H --> P["⚙️ Physical AI policy<br/>(this project) — every 20 ms"]
+    P --> R["🤖 Robot body + 18 servos"]
+    R -.->|"gravity · friction · contact"| P
+```
+
 > [!NOTE]
 > **Key takeaways**
 > - Physical AI outputs motor commands under hard real-time limits; mistakes have irreversible physical costs.

@@ -46,6 +46,17 @@ hexapod:
 A robot description is a tree: torso at the root, legs branching off,
 exactly like a skeleton.
 
+```mermaid
+flowchart TD
+    T["🟦 Torso<br/>(root body, free joint)"]
+    T --> L1["Leg 1"] --> J1["coxa → femur → tibia<br/>3 hinge joints + 3 actuators"]
+    T --> L2["Leg 2 …"]
+    T --> L6["Leg 6"] --> J6["coxa → femur → tibia<br/>3 hinge joints + 3 actuators"]
+    L2 -.-> dots["6 legs × 3 = 18 joints, 18 actuators"]
+```
+
+In XML that same tree is just `<body>` tags nested inside `<body>` tags:
+
 ```xml
 <body name="torso">
   <geom type="box" size=".12 .09 .03" mass="0.5"/>
