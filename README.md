@@ -1,5 +1,10 @@
 # Robo-Greeno — Data A
 
+> *A free, beginner-friendly **Physical AI tutorial**: large language models vs.
+> embodied AI, hexapod leg design, **MuJoCo** physics simulation, and
+> **reinforcement learning** for robot locomotion — taught through an
+> open-source six-legged agricultural spider robot, and fully readable on GitHub.*
+
 Open-source workspace for the **Data A** track of the
 [KamaTech](https://kamatech.org.il) OSS On-the-Job Training program,
 Robo-Greeno project (May 2026 - Jul 2026, with possible extension).
@@ -12,11 +17,13 @@ generation, IMU stabilization, and reinforcement-learning locomotion in
 simulation, with a focus on policies that fit ESP32 + Raspberry Pi
 class hardware.
 
-## 📖 Start here — the Physical AI Tutorial
+## 📖 Physical AI Tutorial (start here)
 
-A four-chapter, beginner-friendly intro to Physical AI, taught through this
-hexapod. **Reads right here on GitHub** — clickable navigation, diagrams,
-and callouts, no website or build step needed:
+A free, four-chapter, beginner-friendly **Physical AI tutorial** — covering
+large language models vs. embodied AI, hexapod leg design, **MuJoCo** physics
+simulation, and **reinforcement learning** for legged robot locomotion. Taught
+through this open-source hexapod and **fully readable on GitHub** — clickable
+navigation, Mermaid diagrams, and callout boxes, with no website or build step:
 
 1. **[LLM AI vs Physical AI](tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
 2. **[Legs and Fingers — Nature's Engineering](tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
@@ -102,7 +109,10 @@ powered by [`CITATION.cff`](CITATION.cff)) gives APA and BibTeX. Or:
 }
 ```
 
-A version-pinned DOI via Zenodo is planned for the first tagged release.
+A version-pinned **DOI** (the gold standard for citation) can be minted by
+depositing a release snapshot to [Zenodo](https://zenodo.org) — no
+organization-admin rights required. Once minted, the DOI badge goes here and in
+[`CITATION.cff`](CITATION.cff).
 
 ## License
 
