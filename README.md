@@ -91,6 +91,10 @@ as TAs in the next bootcamp.
   conventions on relative-pose output so vision-based mapping fuses
   cleanly with camera frames.
 
+The concrete interface contract — shared conventions, the canonical
+`pose_stamped` message, servo map, and generated URDF — lives in
+[`interfaces/`](interfaces/INTEGRATION.md).
+
 ## Citing this work
 
 If you use this repository in research or teaching, please cite it.

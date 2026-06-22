@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/KamaTechOrg/robo-greeno-data-a/interfaces/pose_stamped.schema.json",
+  "title": "robo-greeno/data-a/pose_stamped",
+  "description": "Canonical time-stamped robot-state message published by Data A (locomotion). Consumed by Data B (spatial tagging of detections) and Cloud (collaborative mapping). Conventions chosen to match the AgCloud canonical: epoch milliseconds, body frame +X forward / +Y left / +Z up, SI units, quaternion (w,x,y,z).",
+  "type": "object",
+  "required": ["schema", "version", "robot_id", "stamp_ms", "frame", "pose"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "robo-greeno/data-a/pose_stamped"},
+    "version": {"type": "integer", "const": 1},
+    "robot_id": {"type": "string", "description": "Stable per-robot id, e.g. 'spider-01'. Same id used across all teams and MQTT topics."},
+    "stamp_ms": {"type": "integer", "description": "Capture time, epoch MILLISECONDS, UTC. Matches AgCloud captured_ts. NOT float seconds."},
+    "seq": {"type": "integer", "minimum": 0, "description": "Monotonic sequence counter per robot, for ordering and loss detection."},
+    "frame": {"type": "string", "enum": ["body"], "description": "Body frame: +X forward, +Y left, +Z up (right-handed, REP-103 style)."},
+    "odom_frame": {"type": "string", "default": "odom", "description": "Reference frame the pose is expressed in. 'odom' = drifting odometry relative to power-on pose (indoor greenhouse, no GPS). Cloud fuses these into the shared map."},
+    "pose": {
+      "type": "object",
+      "required": ["position_m", "orientation_quat"],
+      "additionalProperties": false,
+      "properties": {
+        "position_m": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3, "description": "[x, y, z] in metres, in odom_frame."},
+        "orientation_quat": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4, "description": "[w, x, y, z] unit quaternion, body->odom rotation."},
+        "covariance6": {"type": "array", "items": {"type": "number"}, "minItems": 6, "maxItems": 6, "description": "Optional diagonal pose covariance [x,y,z,roll,pitch,yaw]; omit if unknown."}
+      }
+    },
+    "twist": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "linear_mps": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+        "angular_rps": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3}
+      }
+    },
+    "imu": {
+      "type": "object",
+      "description": "Raw/filtered IMU in body frame, for Data B time-sync and Cloud dead-reckoning.",
+      "additionalProperties": false,
+      "properties": {
+        "accel_mps2": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+        "gyro_rps": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+        "orientation_quat": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4, "description": "Madgwick/Mahony AHRS output [w,x,y,z]."}
+      }
+    },
+    "gait": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "enum": ["stand", "tripod", "wave", "ripple", "turn", "rl_policy"]},
+        "phase": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "foot_contacts": {"type": "array", "items": {"type": "boolean"}, "minItems": 6, "maxItems": 6, "description": "Per-leg ground contact, leg order front_left, mid_left, back_left, back_right, mid_right, front_right (same order as servo channels / URDF)."},
+    "joint_angles_rad": {"type": "array", "items": {"type": "number"}, "minItems": 18, "maxItems": 18, "description": "Optional: 18 joint angles, channel order leg*3+{coxa,femur,tibia}. See servo_conventions.md."},
+    "node_id": {"type": "string", "description": "Optional: nearest greenhouse-graph node id, for Cloud's node-based position model (e.g. 'n12')."}
+  }
+}

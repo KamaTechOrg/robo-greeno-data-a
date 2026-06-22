@@ -1,0 +1,26 @@
+{
+  "schema": "robo-greeno/data-a/pose_stamped",
+  "version": 1,
+  "robot_id": "spider-01",
+  "stamp_ms": 1781000130123,
+  "seq": 48213,
+  "frame": "body",
+  "odom_frame": "odom",
+  "pose": {
+    "position_m": [3.142, -0.871, 0.075],
+    "orientation_quat": [0.9952, 0.0, 0.0, 0.0980],
+    "covariance6": [0.01, 0.01, 0.004, 0.002, 0.002, 0.02]
+  },
+  "twist": {
+    "linear_mps": [0.058, 0.0, 0.0],
+    "angular_rps": [0.0, 0.0, 0.012]
+  },
+  "imu": {
+    "accel_mps2": [0.04, -0.01, 9.79],
+    "gyro_rps": [0.001, 0.002, 0.011],
+    "orientation_quat": [0.9952, 0.0007, -0.0011, 0.0980]
+  },
+  "gait": {"name": "tripod", "phase": 0.37},
+  "foot_contacts": [true, false, true, false, true, false],
+  "node_id": "n12"
+}
