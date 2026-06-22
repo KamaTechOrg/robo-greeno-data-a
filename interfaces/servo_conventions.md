@@ -89,17 +89,29 @@ Raspberry Pi over **I²C**. Two consequences pin down the open questions:
    boards well within 20 ms.
 
 Incremental bring-up path (matches the sessions): **1 leg (3 ch, board0)** →
-**5 legs (15 ch, board0)** → **6 legs (18 ch, board0+board1)**. The team is
-already driving servos *by angle* with a calibration file
-(`angle_input.py`, `calibration_notes.txt`), which is exactly the
-radians→PWM layer below.
+**5 legs (15 ch, board0)** → **6 legs (18 ch, board0+board1)**.
+
+**Real stack on the bench today** (Ruth's
+[`session-14-pca9685-servo-control`](https://github.com/r83575/robo-greeno-embedded/tree/main/session-14-pca9685-servo-control)):
+Raspberry Pi 3B + PCA9685 + **MG996R** servos, driven with the high-level
+**`adafruit_servokit.ServoKit`** library — you command **degrees** and call
+`set_pulse_width_range(500, 2500)`; the library handles µs→tick. So Data A's
+radians map straight onto `kit.servo[ch].angle` (see bridge below). Only
+**2 servos** are on hand so far → start with coxa+femur (channels 0,1), add
+tibia when a third arrives.
+
+> ⚠️ **Range check:** a standard MG996R travels ~**180°**, but `config.py` asks
+> for **femur 210°** (−90…+120) and **tibia 190°** (−170…+20). Either use 270°
+> servos, gear them, or clamp the usable joint range to ≤180° in `config.py`
+> before hardware bring-up. Coxa (100°) is fine.
 
 ## PWM calibration (per servo, filled on real hardware)
 
-Cheap servos (MG90S) vary ±5%, so each channel needs a calibration row mapping
-**radians → PWM microseconds** (PCA9685: µs → 12-bit tick = `round(us / 4.88)`
-at 50 Hz). Template (Embedded fills `min_us`/`max_us` after calibrating each
-servo; `reverse` flips direction for back-to-front mounting):
+With `adafruit_servokit`, calibration is just `set_pulse_width_range(min_us,
+max_us)` per channel (the team uses **500–2500 µs** for MG996R) plus a per-joint
+**home angle** and **direction sign** that tie the servo's 0–180° to the joint's
+zero. Template (Embedded fills these after calibrating each servo; `reverse`
+flips direction for back-to-front mounting):
 
 ```json
 {
