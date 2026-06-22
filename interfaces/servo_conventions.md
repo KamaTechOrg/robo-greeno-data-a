@@ -69,11 +69,37 @@ A policy outputs `action ∈ [−1, 1]^18`; the joint target is
 `target = rest + 0.3 · action` (rad). Embedded can take either absolute targets
 (above) or `{action, rest}` — absolute is preferred for hardware.
 
+## Confirmed hardware — PCA9685 (Embedded sessions, June 2026)
+
+Per the Embedded track (mentor Dosithee Miet; sessions in students' repos, e.g.
+[r83575/robo-greeno-embedded `session-14-pca9685-servo-control`](https://github.com/r83575/robo-greeno-embedded/tree/main/session-14-pca9685-servo-control)),
+the controller is the **PCA9685** — 16-channel, 12-bit PWM, driven from the
+Raspberry Pi over **I²C**. Two consequences pin down the open questions:
+
+1. **18 servos > 16 channels → two PCA9685 boards** on the same I²C bus at
+   different addresses (`0x40`, `0x41`). Logical channel 0…17 maps to:
+   `board = channel // 16`, `pin = channel % 16` — i.e. joints **0–15 → board0
+   (0x40) pins 0–15**, joints **16–17 → board1 (0x41) pins 0–1**. (A single leg
+   = 3 channels on board0, which matches the team's current single-leg stage.)
+2. **Open-loop.** PCA9685 is PWM-out only and hobby servos give no position
+   feedback → `pose_stamped.joint_angles_rad` is **commanded, not measured**.
+   Q2 resolved: open-loop control.
+3. **Rate fits for free.** PCA9685 servo refresh is set to **50 Hz**, so one PWM
+   frame per command at our 50 Hz target — I²C fast-mode (400 kHz) updates both
+   boards well within 20 ms.
+
+Incremental bring-up path (matches the sessions): **1 leg (3 ch, board0)** →
+**5 legs (15 ch, board0)** → **6 legs (18 ch, board0+board1)**. The team is
+already driving servos *by angle* with a calibration file
+(`angle_input.py`, `calibration_notes.txt`), which is exactly the
+radians→PWM layer below.
+
 ## PWM calibration (per servo, filled on real hardware)
 
 Cheap servos (MG90S) vary ±5%, so each channel needs a calibration row mapping
-**radians → PWM microseconds**. Template (Embedded fills `min_us`/`max_us` after
-calibrating each servo; `reverse` flips direction for back-to-front mounting):
+**radians → PWM microseconds** (PCA9685: µs → 12-bit tick = `round(us / 4.88)`
+at 50 Hz). Template (Embedded fills `min_us`/`max_us` after calibrating each
+servo; `reverse` flips direction for back-to-front mounting):
 
 ```json
 {
@@ -86,12 +112,19 @@ Conversion: `us = lerp(min_us, max_us, (angle - at_rad[0]) / (at_rad[1] - at_rad
 then apply `reverse` and `trim_us`. Data A works purely in radians; **PWM lives
 only on the Embedded side**, keyed by this table.
 
-## Open items to confirm with Embedded (Pavan / Dosithee)
+## Open items with Embedded (mentor Dosithee Miet / Pavan)
 
-1. Controller board: Servo 2040 (RP2040, 18-ch) vs PCA9685 — channel numbering
-   matches 0…17 either way; confirm wiring order follows this table.
-2. Feedback: do servos report position back to Data A, or is control open-loop?
-   (Affects whether `pose_stamped.joint_angles_rad` is measured or commanded.)
-3. Note: `RL/hexapod_env.py`'s inline sim currently uses tighter joint ranges
-   (−45/45, −60/60, −90/30). **`config.py` ranges above are canonical**; the RL
-   sim should be widened to match before hardware bring-up.
+- ✅ **Controller:** PCA9685 (16-ch I²C) — *resolved*. Two boards for 18 servos
+  (0x40 + 0x41), channel→`(board, pin)` map above.
+- ✅ **Feedback:** open-loop — *resolved*. `joint_angles_rad` is commanded.
+- ⬜ **Consolidation:** session work currently lives in students' personal repos
+  (`r83575/robo-greeno-embedded`, `Yaffi4909/embedded-systems-mentoring`); the
+  org repo `KamaTechOrg/robogreeno-emb` is still empty. Propose moving the
+  PCA9685 driver into `robogreeno-emb` so Data A can target one canonical place.
+- ⬜ **Per-servo calibration table** filled for the servos on hand (they have the
+  `calibration_notes.txt` workflow started — align its format with the JSON above).
+- ⬜ **Hardware count:** only a few servos on the bench so far → bring up one leg
+  (3 ch) end-to-end first, then scale to 18.
+- ⬜ **Sim parity:** `RL/hexapod_env.py` uses tighter joint ranges
+  (−45/45, −60/60, −90/30) than canonical `config.py` (−50/50, −90/120,
+  −170/20). **`config.py` wins**; widen the RL sim before hardware bring-up.

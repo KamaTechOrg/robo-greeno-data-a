@@ -38,8 +38,15 @@ servo map, joint ranges, command format (18 absolute joint targets in rad at
 loop), confirmation the controller wiring follows channel order 0…17, and the
 filled PWM calibration table.
 
-**Status:** Embedded repo is currently empty (README + CODEOWNERS only) — this is
-the Week-1 deliverable and the cleanest hand-off; nothing to reconcile yet.
+**Status (June 2026):** the org repo `robogreeno-emb` is still empty, but the
+Embedded track is active in students' personal repos (mentor Dosithee Miet),
+working through a session curriculum — now at **PCA9685 servo control by angle**
+(e.g. `r83575/robo-greeno-embedded/session-14-pca9685-servo-control`). This pins
+down the hardware: **PCA9685, 16-ch I²C, open-loop, 50 Hz**, and since 18 > 16
+they need **two boards** (0x40 + 0x41). See
+[`servo_conventions.md`](servo_conventions.md) for the two-board channel map and
+incremental single-leg → hexapod bring-up. Open ask: consolidate the driver into
+`robogreeno-emb` so Data A targets one canonical place.
 
 ## 2. Data A ↔ Data B — pose for spatial tagging of detections
 
@@ -118,7 +125,7 @@ before this flows end-to-end; the schema above is ready to slot in.
 
 | # | Team | Question | Owner |
 |---|------|----------|-------|
-| 1 | Embedded | Servo feedback: open or closed loop? Controller = 2040 or PCA9685? | Pavan |
+| 1 | Embedded | ~~Controller / loop type~~ → resolved: **PCA9685 ×2, open-loop, 50 Hz**. Remaining: consolidate driver into `robogreeno-emb`; fill PWM calibration | Dosithee / Pavan |
 | 2 | Data B | Adopt `stamp_ms` (ms) + capture-time pose stamping (option a)? | Naama / Scot |
 | 3 | Data B | Who owns camera→body extrinsic calibration, and when? | Data A + Data B |
 | 4 | Cloud | Extend `TelemetryMessage` or add a `pose` message type? | Kayvan |
