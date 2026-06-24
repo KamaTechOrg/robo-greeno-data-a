@@ -53,8 +53,10 @@ incremental single-leg → hexapod bring-up. Open ask: consolidate the driver in
 Data B runs on-bot detection and publishes to MQTT topic
 `MQTT/vision/detections` (JSON: `frame_id`, `timestamp`, `image_quality`,
 `detection.results[…]` with pixel `bbox`). Their plan explicitly needs **robot
-pose + IMU per frame** to spatially tag detections (Sprint 4 / SLAM), and their
-**Issue #11 "Data A Integration Questions" is open and unanswered.**
+pose + IMU per frame** to spatially tag detections (Sprint 4 / SLAM). Their
+**Issue #11 "Data A Integration Questions" was closed as completed (2026-06-22)**
+once Data A's answers landed; the pose *delivery* refinement below (pull vs 50 Hz
+stream) was raised separately after that, in the cross-team thread.
 
 **Who owns pose (settles the (a)-vs-(c) question):** Embedded owns the **raw
 sensors** (camera frames, IMU); **Data A owns pose** — it fuses IMU + leg
