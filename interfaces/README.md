@@ -11,7 +11,7 @@ Cloud) and the canonical AgCloud platform.
 | [servo_conventions.md](servo_conventions.md) | 18-channel servo map, joint ranges, command format, PWM template (for Embedded). |
 | [hexapod.urdf](hexapod.urdf) | Robot description, generated from `config.py` (sim/firmware parity). |
 | [gen_urdf.py](gen_urdf.py) | Regenerates `hexapod.urdf` from the single source-of-truth geometry. |
-| [pose_publisher.py](pose_publisher.py) | Reference stub, three modes: record to file, live-publish to MQTT at 50 Hz, or `--serve` a synchronous "freshest pose now" over MQTT request/reply. In-process callers import `get_latest_pose()` (option (c) — pull, no subscription). Lets Data B/Cloud develop **now**, no robot needed. |
+| [pose_publisher.py](pose_publisher.py) | Reference stub. **Data A side:** record to file, live-publish at 50 Hz (`--mqtt`), or `--serve` a synchronous "freshest pose now" over MQTT request/reply; co-located callers import `get_latest_pose()`. **Data B side:** `request_latest_pose()` (or `--get`) pulls one freshest pose at capture time — option (c), no 50 Hz subscription. Lets Data B/Cloud develop **now**, no robot needed. |
 | [sample_pose_stream.jsonl](sample_pose_stream.jsonl) | 200 recorded, schema-valid `pose_stamped` messages (a 4 s tripod walk) to replay against. |
 
 Built from investigation of the other teams' repos on 2026-06-22. The schema and

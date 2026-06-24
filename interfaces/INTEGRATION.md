@@ -56,12 +56,23 @@ Data B runs on-bot detection and publishes to MQTT topic
 pose + IMU per frame** to spatially tag detections (Sprint 4 / SLAM), and their
 **Issue #11 "Data A Integration Questions" is open and unanswered.**
 
+**Who owns pose (settles the (a)-vs-(c) question):** Embedded owns the **raw
+sensors** (camera frames, IMU); **Data A owns pose** — it fuses IMU + leg
+kinematics into the `odom` `pose_stamped` and is the one process that holds the
+*latest* pose. So Embedded does **not** inherently have pose: it has sensor data
+it sends to Data A. That makes **(c) the default** (Data B pulls pose from Data A
+directly); **(a) only applies if Data A's estimator is co-located in Embedded's
+process** (then the grabber can call `get_latest_pose()` locally). Either way we
+do **not** route pose Data A → Embedded → Data B just to hand it over.
+
 **Contract:**
 
 1. **Time base.** Camera frames and `pose_stamped` share one clock, in
    `stamp_ms` (epoch ms, UTC). On a single Pi this is the system clock; if IMU
    runs on the ESP32, Embedded disciplines it to the Pi clock. (Data B converts
-   its current float-seconds `timestamp` → ms.)
+   its current float-seconds `timestamp` → ms.) This shared clock is what lets
+   Data B bind a Data-A pose to an Embedded frame even though they come from two
+   processes.
 2. **Pose delivery — three options, recommend (a), else (c):** Data B pulls
    frames on demand (CPU-only) and does **not** want to run a 50 Hz subscriber
    for poses it will mostly discard. Both pull-based options below honour that —
@@ -74,7 +85,9 @@ pose + IMU per frame** to spatially tag detections (Sprint 4 / SLAM), and their
    - **(c) Synchronous "freshest pose now" from Data A (pull):** if Embedded does
      **not** carry pose, Data B requests the freshest pose from Data A at capture
      time — in-process `get_latest_pose()` when co-located, or MQTT request/reply
-     (`<topic>/get` → reply on a per-frame `reply_topic`). Data A's 50 Hz control
+     (Data A serves with `pose_publisher.py --serve`; Data B calls
+     `request_latest_pose()` / `--get`: publish `<topic>/get` → reply on a
+     per-frame `reply_topic`). Data A's 50 Hz control
      loop already holds the current pose, so this is just a different door on the
      same state — **pub/sub is not the only access pattern.** Returns a pure
      `pose_stamped`; Data B rejects the pair if `|frame_stamp_ms − stamp_ms|` >

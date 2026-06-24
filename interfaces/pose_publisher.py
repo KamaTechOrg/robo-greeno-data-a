@@ -19,15 +19,20 @@ Three modes (pub/sub is NOT the only access pattern):
   #    pulls pose only for the frames it processes — no 50 Hz subscription:
   python interfaces/pose_publisher.py --serve --host localhost
 
+  # 4) Data B side: pull ONE freshest pose (run against a broker where --serve runs):
+  python interfaces/pose_publisher.py --get --host localhost
+
 For a co-located caller (e.g. Embedded stamping a frame at capture), import
 `get_latest_pose()` for the same freshest-pose snapshot with no broker at all.
-These cover INTEGRATION.md §2 delivery option (c): "synchronous freshest-pose pull".
+Data B's MQTT client is `request_latest_pose()`. These cover INTEGRATION.md §2
+delivery option (c): "synchronous freshest-pose pull".
 
 Conventions: epoch-ms timestamps, body frame +X fwd/+Y left/+Z up, metres,
 radians, quaternion [w,x,y,z]. Trajectory params are read from the single
 source-of-truth geometry in ShiriStern/wave-walk/config.py.
 """
 import argparse
+import itertools
 import json
 import math
 import os
@@ -202,6 +207,51 @@ def serve(host, port, topic):
         print("\nstopped")
 
 
+_REQ_SEQ = itertools.count()
+
+
+def request_latest_pose(host="localhost", port=1883, topic=None,
+                        timeout_ms=100, reply_topic=None):
+    """Data B side of option (c): pull the freshest pose over MQTT request/reply.
+
+    Publishes one request to ``<topic>/get`` and blocks until Data A's ``serve()``
+    replies, or ``timeout_ms`` elapses. Returns the ``pose_stamped`` dict, or
+    ``None`` on timeout. Call this **at frame-capture time** and bind the result
+    to the frame's own ``stamp_ms``: reject the pair if
+    ``abs(frame_stamp_ms - pose['stamp_ms'])`` exceeds your skew budget (e.g.
+    50 ms), so the pose is bound to capture, not to inference time. One request
+    per frame Data B processes — no 50 Hz subscription.
+    """
+    try:
+        import paho.mqtt.client as mqtt
+    except ImportError:
+        sys.exit("paho-mqtt not installed:  pip install paho-mqtt")
+
+    topic = topic or f"robogreeno/data-a/{ROBOT_ID}/pose"
+    # unique reply topic per call so concurrent callers never cross-talk
+    reply_topic = reply_topic or f"{topic}/latest/{os.getpid()}-{next(_REQ_SEQ)}"
+    box = {}
+    done = threading.Event()
+
+    def on_message(_client, _userdata, m):
+        try:
+            box["pose"] = json.loads(m.payload)
+        except ValueError:
+            box["pose"] = None
+        done.set()
+
+    client = mqtt.Client()
+    client.on_message = on_message
+    client.connect(host, port, 60)
+    client.subscribe(reply_topic, qos=0)        # register before we ask, same ordered conn
+    client.loop_start()
+    client.publish(f"{topic}/get", json.dumps({"reply_topic": reply_topic}), qos=0)
+    got = done.wait(timeout_ms / 1000.0)
+    client.loop_stop()
+    client.disconnect()
+    return box.get("pose") if got else None
+
+
 def main():
     ap = argparse.ArgumentParser(description="Data A pose_stamped publisher stub")
     ap.add_argument("--record", type=int, metavar="N", help="write N messages to --out and exit")
@@ -210,6 +260,9 @@ def main():
     ap.add_argument("--mqtt", action="store_true", help="live-publish to MQTT at 50 Hz")
     ap.add_argument("--serve", action="store_true",
                     help="serve synchronous 'freshest pose now' over MQTT request/reply")
+    ap.add_argument("--get", action="store_true",
+                    help="Data B demo: pull ONE freshest pose via request/reply and print it")
+    ap.add_argument("--timeout-ms", type=int, default=100, help="--get reply timeout")
     ap.add_argument("--host", default="localhost")
     ap.add_argument("--port", type=int, default=1883)
     ap.add_argument("--topic", default=f"robogreeno/data-a/{ROBOT_ID}/pose")
@@ -226,6 +279,13 @@ def main():
 
     if args.serve:
         serve(args.host, args.port, args.topic)
+        return
+
+    if args.get:
+        pose = request_latest_pose(args.host, args.port, args.topic, args.timeout_ms)
+        if pose is None:
+            sys.exit(f"no reply within {args.timeout_ms} ms (is `--serve` running on this broker?)")
+        print(json.dumps(pose))
         return
 
     if args.mqtt:
