@@ -5,7 +5,7 @@ real robot and no running locomotion stack. It synthesizes a plausible hexapod
 odometry trajectory (slow forward tripod walk with a gentle turn) and emits
 `pose_stamped` messages (see pose_stamped.schema.json).
 
-Two modes:
+Three modes (pub/sub is NOT the only access pattern):
 
   # 1) Record a deterministic sample file Data B can replay:
   python interfaces/pose_publisher.py --record 200 --start-ms 1781000000000 \
@@ -14,6 +14,14 @@ Two modes:
   # 2) Live-publish to MQTT at 50 Hz (needs `pip install paho-mqtt`):
   python interfaces/pose_publisher.py --mqtt --host localhost \
          --topic robogreeno/data-a/spider-01/pose
+
+  # 3) Serve synchronous "freshest pose now" over MQTT request/reply, so Data B
+  #    pulls pose only for the frames it processes — no 50 Hz subscription:
+  python interfaces/pose_publisher.py --serve --host localhost
+
+For a co-located caller (e.g. Embedded stamping a frame at capture), import
+`get_latest_pose()` for the same freshest-pose snapshot with no broker at all.
+These cover INTEGRATION.md §2 delivery option (c): "synchronous freshest-pose pull".
 
 Conventions: epoch-ms timestamps, body frame +X fwd/+Y left/+Z up, metres,
 radians, quaternion [w,x,y,z]. Trajectory params are read from the single
@@ -24,6 +32,7 @@ import json
 import math
 import os
 import sys
+import threading
 import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "ShiriStern", "wave-walk"))
@@ -90,12 +99,117 @@ def stream(n, start_ms):
         y += V_FWD * math.sin(theta) * DT_S
 
 
+class PoseSource:
+    """Holds the freshest pose, exactly like the real locomotion stack.
+
+    The 50 Hz control loop keeps one current pose in process; a synchronous
+    ``latest()`` call returns it with no queue and no subscription. This is the
+    in-process side of INTEGRATION.md §2 delivery option (c): "freshest pose now".
+    Here a background thread synthesizes the walk so callers can develop with no
+    robot; in the real stack ``latest()`` just reads the controller's state.
+    """
+
+    def __init__(self):
+        self._seq = 0
+        self._x = self._y = self._theta = 0.0
+        self._lock = threading.Lock()
+
+    def step(self):
+        """Advance the odometry one 50 Hz tick (driven by the control loop)."""
+        with self._lock:
+            self._theta += YAW_RATE * DT_S
+            self._x += V_FWD * math.cos(self._theta) * DT_S
+            self._y += V_FWD * math.sin(self._theta) * DT_S
+            self._seq += 1
+
+    def run(self, stop=None):
+        """Tick the odometry at 50 Hz until ``stop`` (a threading.Event) is set."""
+        while stop is None or not stop.is_set():
+            self.step()
+            time.sleep(DT_S)
+
+    def latest(self):
+        """Freshest ``pose_stamped`` now — synchronous, no subscribe.
+
+        Returns a pure, schema-valid ``pose_stamped`` whose ``stamp_ms`` is when
+        this pose was produced. The caller binds it to a frame's capture instant
+        and rejects the pair if ``|frame_stamp_ms - stamp_ms|`` exceeds its skew
+        budget (e.g. 50 ms) — the pose is bound to capture, not to inference time.
+        """
+        with self._lock:
+            t = self._seq * DT_S
+            phase = (t / C.GAIT_PERIOD) % 1.0
+            return make_message(self._seq, int(time.time() * 1000),
+                                self._x, self._y, self._theta, phase)
+
+
+_DEFAULT_SOURCE = None
+
+
+def get_latest_pose():
+    """In-process synchronous "freshest pose now" — INTEGRATION.md §2 option (c).
+
+    A co-located caller (e.g. Embedded stamping a frame at capture) gets the
+    current pose with zero queue/subscription/broker. Backed by a lazily-started
+    50 Hz simulation here; in the real stack this reads the locomotion controller.
+    """
+    global _DEFAULT_SOURCE
+    if _DEFAULT_SOURCE is None:
+        _DEFAULT_SOURCE = PoseSource()
+        threading.Thread(target=_DEFAULT_SOURCE.run, daemon=True).start()
+    return _DEFAULT_SOURCE.latest()
+
+
+def serve(host, port, topic):
+    """MQTT request/reply: reply with the freshest pose on each request.
+
+    Request topic:  ``<topic>/get``   payload (optional JSON):
+        {"reply_topic": "..."}
+    Reply  topic:  the request's ``reply_topic``, else ``<topic>/latest``.
+    The reply is a pure ``pose_stamped``; for correlation, request a per-frame
+    ``reply_topic`` (e.g. ``.../pose/latest/<frame_id>``). Data B publishes one
+    request per frame it processes — no 50 Hz subscription.
+    """
+    try:
+        import paho.mqtt.client as mqtt
+    except ImportError:
+        sys.exit("paho-mqtt not installed:  pip install paho-mqtt")
+
+    src = PoseSource()
+    threading.Thread(target=src.run, daemon=True).start()
+    req_topic = f"{topic}/get"
+    default_reply = f"{topic}/latest"
+
+    def on_message(client, _userdata, m):
+        reply_topic = default_reply
+        if m.payload:
+            try:
+                reply_topic = json.loads(m.payload).get("reply_topic", default_reply)
+            except (ValueError, AttributeError):
+                pass
+        msg = src.latest()
+        client.publish(reply_topic, json.dumps(msg, separators=(",", ":")), qos=0)
+
+    client = mqtt.Client()
+    client.on_message = on_message
+    client.connect(host, port, 60)
+    client.subscribe(req_topic, qos=0)
+    print(f"serving freshest pose: reply to requests on mqtt://{host}:{port}/{req_topic} "
+          f"(reply -> {default_reply}; Ctrl-C to stop)")
+    try:
+        client.loop_forever()
+    except KeyboardInterrupt:
+        print("\nstopped")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Data A pose_stamped publisher stub")
     ap.add_argument("--record", type=int, metavar="N", help="write N messages to --out and exit")
     ap.add_argument("--out", default="interfaces/sample_pose_stream.jsonl")
     ap.add_argument("--start-ms", type=int, default=None, help="epoch-ms of first message (default: now)")
     ap.add_argument("--mqtt", action="store_true", help="live-publish to MQTT at 50 Hz")
+    ap.add_argument("--serve", action="store_true",
+                    help="serve synchronous 'freshest pose now' over MQTT request/reply")
     ap.add_argument("--host", default="localhost")
     ap.add_argument("--port", type=int, default=1883)
     ap.add_argument("--topic", default=f"robogreeno/data-a/{ROBOT_ID}/pose")
@@ -108,6 +222,10 @@ def main():
             for msg in stream(args.record, start_ms):
                 f.write(json.dumps(msg, separators=(",", ":")) + "\n")
         print(f"wrote {args.record} messages to {args.out}")
+        return
+
+    if args.serve:
+        serve(args.host, args.port, args.topic)
         return
 
     if args.mqtt:

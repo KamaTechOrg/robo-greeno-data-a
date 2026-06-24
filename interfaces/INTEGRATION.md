@@ -62,14 +62,29 @@ pose + IMU per frame** to spatially tag detections (Sprint 4 / SLAM), and their
    `stamp_ms` (epoch ms, UTC). On a single Pi this is the system clock; if IMU
    runs on the ESP32, Embedded disciplines it to the Pi clock. (Data B converts
    its current float-seconds `timestamp` → ms.)
-2. **Pose delivery — two options, recommend (a):**
+2. **Pose delivery — three options, recommend (a), else (c):** Data B pulls
+   frames on demand (CPU-only) and does **not** want to run a 50 Hz subscriber
+   for poses it will mostly discard. Both pull-based options below honour that —
+   pose is fetched only for the frames Data B actually processes.
    - **(a) Embedded stamps at capture (preferred):** the frame grabber attaches
      the latest `pose` + `stamp_ms` to each frame before handing it to Data B.
-     No clock-skew, no lookup. Data B copies the block into its detection JSON.
+     No clock-skew, no lookup, no extra IPC. Data B copies the block into its
+     detection JSON. *Requires Embedded to have pose in-process* — true if Data A
+     locomotion is co-located with the grabber (import `get_latest_pose()`).
+   - **(c) Synchronous "freshest pose now" from Data A (pull):** if Embedded does
+     **not** carry pose, Data B requests the freshest pose from Data A at capture
+     time — in-process `get_latest_pose()` when co-located, or MQTT request/reply
+     (`<topic>/get` → reply on a per-frame `reply_topic`). Data A's 50 Hz control
+     loop already holds the current pose, so this is just a different door on the
+     same state — **pub/sub is not the only access pattern.** Returns a pure
+     `pose_stamped`; Data B rejects the pair if `|frame_stamp_ms − stamp_ms|` >
+     its skew budget (e.g. 50 ms), so the pose is bound to **capture**, not to
+     inference time.
    - **(b) Pose stream + nearest-time lookup (fallback):** Data A publishes
      `pose_stamped` at ~50 Hz on `robogreeno/data-a/<robot_id>/pose`; Data B
      samples the pose whose `stamp_ms` is closest to the frame's `stamp_ms`
-     (reject if Δt > 50 ms).
+     (reject if Δt > 50 ms). The 50 Hz publisher stays up for Cloud odometry and
+     replay-based dev, but Data B need not subscribe.
 3. **What Data B adds to each detection message** (additive, non-breaking):
    ```json
    "robot_id": "spider-01",
@@ -126,7 +141,7 @@ before this flows end-to-end; the schema above is ready to slot in.
 | # | Team | Question | Owner |
 |---|------|----------|-------|
 | 1 | Embedded | ~~Controller / loop type~~ → resolved: **PCA9685 ×2, open-loop, 50 Hz**. Remaining: consolidate driver into `robogreeno-emb`; fill PWM calibration | Dosithee / Pavan |
-| 2 | Data B | Adopt `stamp_ms` (ms) + capture-time pose stamping (option a)? | Naama / Scot |
+| 2 | Data B / Embedded | ~~50 Hz subscribe vs pull~~ → resolved: **pull, not stream** — option (a) if Embedded carries pose, else (c) synchronous freshest-pose from Data A. Open: does Embedded have pose in-process? + Data B adopts `stamp_ms` (ms) | Naama / Scot / Pavan |
 | 3 | Data B | Who owns camera→body extrinsic calibration, and when? | Data A + Data B |
 | 4 | Cloud | Extend `TelemetryMessage` or add a `pose` message type? | Kayvan |
 | 5 | All | One `robot_id` scheme across all repos/topics | all mentors |
