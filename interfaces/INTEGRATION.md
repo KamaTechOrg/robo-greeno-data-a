@@ -46,7 +46,9 @@ down the hardware: **PCA9685, 16-ch I²C, open-loop, 50 Hz**, and since 18 > 16
 they need **two boards** (0x40 + 0x41). See
 [`servo_conventions.md`](servo_conventions.md) for the two-board channel map and
 incremental single-leg → hexapod bring-up. Open ask: consolidate the driver into
-`robogreeno-emb` so Data A targets one canonical place.
+`robogreeno-emb` so Data A targets one canonical place. The physical
+I²C (`SDA`/`SCL`) → PCA9685 ×2 → 18-servo (`power`/`GND`/`PWM`) wiring is sketched
+in **[`MujocoRpiPca9685.pdf`](MujocoRpiPca9685.pdf)** (page 2).
 
 ## 2. Data A ↔ Data B — pose for spatial tagging of detections
 
@@ -113,6 +115,20 @@ do **not** route pose Data A → Embedded → Data B just to hand it over.
 **Answers to Data B Issue #11** (frame rate 50 Hz, same time domain yes,
 pose = position+quaternion in `odom`, formalize at Sprint 1) are posted to that
 issue.
+
+### 2.1 Camera / CSI hardware interface (raw input)
+
+The vision sensor is a **CSI camera** (e.g. ArduCam 8 MP) on a **Raspberry Pi 5**,
+captured in Python via `picamera2`. The CSI ribbon carries everything the sensor
+needs on one cable — **power, ground, I²C** (sensor configuration/control),
+**CSI-2 data lanes, and pixel clock**. These are the `camera frames` Embedded
+owns and Data B consumes; Data A never touches pixels, only the `pose` bound to
+each frame (options (a)/(c) above). Wiring is sketched in
+**[`MujocoRpiPca9685.pdf`](MujocoRpiPca9685.pdf)** (page 1). Per the proposed
+`hexapod/` package (same PDF), this interface lands as `camera.py` (Data B
+boundary) alongside `real_pca9685.py` (Embedded boundary), both swappable behind
+`main.py`'s sim↔real switch. Intrinsics are Data B's; the **camera→body
+extrinsic is Data A's once the mount is fixed** (Open Q #3).
 
 ## 3. Data A ↔ Cloud — odometry for collaborative mapping
 

@@ -14,6 +14,7 @@ Cloud) and the canonical AgCloud platform.
 | [pose_publisher.py](pose_publisher.py) | Reference stub. **Data A side:** record to file, live-publish at 50 Hz (`--mqtt`), or `--serve` a synchronous "freshest pose now" over MQTT request/reply; co-located callers import `get_latest_pose()`. **Data B side:** `request_latest_pose()` (or `--get`) pulls one freshest pose at capture time — option (c), no 50 Hz subscription. Lets Data B/Cloud develop **now**, no robot needed. |
 | [sample_pose_stream.jsonl](sample_pose_stream.jsonl) | 200 recorded, schema-valid `pose_stamped` messages (a 4 s tripod walk) to replay against. |
 | [front_left_leg_wave_walk.csv](front_left_leg_wave_walk.csv) | Front-left leg joint angles (coxa/femur/tibia, rad + deg) over one gait period at 50 Hz, for Embedded's one-leg sim-to-hardware check. Generated from the wave-walk gait + IK; FK round-trip verified (≤1e-9 m), within joint limits. |
+| [MujocoRpiPca9685.pdf](MujocoRpiPca9685.pdf) | Hardware-interface diagram (manuscript). Page 1: CSI camera → Raspberry Pi 5 (power/ground/I²C/CSI data/clock on one ribbon). Page 2: I²C bus → PCA9685 ×2 → 18 servos (coxa/femur/tibia × 6 legs), plus the proposed consolidated `hexapod/` package layout with sim↔real boundaries. |
 
 Built from investigation of the other teams' repos on 2026-06-22. The schema and
 URDF are machine-validated (`jsonschema`, XML well-formedness, 18-joint count).
