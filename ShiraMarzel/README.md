@@ -22,6 +22,19 @@ a `--check`, a short README, and a screen recording.
 [`../PhantomX/assignments/`](../PhantomX/assignments/); the companion,
 Problem A — Body-pose control, goes to Hadas Sigaron.)
 
+## My demo
+
+→ **Self-contained folder:** [`turn-in-place/`](./turn-in-place/) —
+`demo_turn_in_place.py` (the turn gait, the part I own) + the three
+shared modules + a folder [`README`](./turn-in-place/README.md).
+Run `python demo_turn_in_place.py --check`; it prints
+`ALL CHECKS PASSED` (in sim the robot turns ~178° in 8 s with ~0.1 cm
+drift — it spins, it does not walk away).
+
+→ **Colab notebook:** [`turn_in_place_demo.ipynb`](./turn_in_place_demo.ipynb)
+— Runtime → Run all: writes the modules, runs the self-test, and
+renders an inline video of the hexapod spinning. No robot needed.
+
 ## My weekly log
 
 - **Week 1 (2026-05-18):** [ ] Read `PLAN.md`. Edit this README → fill in "About me". Reply to the Week 1 issue with a link to your commit.
