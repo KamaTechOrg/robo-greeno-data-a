@@ -64,12 +64,18 @@ def command(mj, m, d, foot_targets):
         d.ctrl[_aid(mj, m, f"{name}_tibia")] = tibia
 
 def world_feet():
-    R = cfg.STANCE_RADIUS
+    """The six feet, fixed on the ground in WORLD coordinates.
 
+    These never move -- only the body does. The IK solves for each
+    foot SITE (the tibia tip / sphere centre), and a resting foot's
+    centre sits one FOOT_RADIUS above the ground, so its z is
+    FOOT_RADIUS, not 0. Using 0 here would command every foot one
+    radius too low and make the body lurch off its standing stance."""
+    R = cfg.STANCE_RADIUS
     return [
         (R * math.cos(mount),
          R * math.sin(mount),
-        0.0)
+         cfg.FOOT_RADIUS)
         for name, mount in cfg.LEGS
     ]
 
@@ -180,45 +186,47 @@ def view():
 # Headless self-test
 # --------------------------------------------------------------------
 def check():
-    print("pose & wave demo  --  self-test\n")
+    print("body-pose demo  --  self-test\n")
     mj, m, d = make_sim()
     print(f"[1] model loaded: {m.nu} servos, {m.nbody} bodies")
 
-    print("[2] every pose in the routine is reachable")
+    print("[2] feet stay planted: the neutral body pose matches the standing stance")
+    neutral = body_pose_targets(cfg.STANCE_HEIGHT, 0.0, 0.0)
+    drift = max(math.dist(a, b) for a, b in zip(neutral, ik.default_stance()))
+    planted_ok = drift < 1e-9
+    print(f"    stance vs neutral drift: {drift:.2e} m  "
+          f"-> {'PASS' if planted_ok else 'FAIL'}")
+
+    print("[3] every pose in the routine is reachable")
     bad = 0
     for k in range(72):                       # 18 s, every 0.25 s
         h, pitch, roll, _ = pose_at(k * 0.25)
-        targets = body_pose_targets(h, pitch, roll)
-        print(targets[0])
         try:
-            ik.solve_all(targets)
+            ik.solve_all(body_pose_targets(h, pitch, roll))
         except ValueError:
             bad += 1
     poses_ok = bad == 0
     print(f"    unreachable poses: {bad}  -> {'PASS' if poses_ok else 'FAIL'}")
 
-    print("[3] the robot holds itself up through the whole routine")
+    print("[4] the robot holds itself up through the whole routine")
     init_stance(mj, m, d)
     low = 1.0
     for _ in range(9000):                     # 18 s
         h, pitch, roll, _ = pose_at(d.time)
-        targets = body_pose_targets(h, pitch, roll)
-        command(mj, m, d, targets)
+        command(mj, m, d, body_pose_targets(h, pitch, roll))
         mj.mj_step(m, d)
         low = min(low, float(d.qpos[_jadr(mj, m, "trunk") + 2]))
     upright = low > 0.035
     print(f"    lowest ride height: {low*100:.1f} cm  "
           f"-> {'PASS' if upright else 'FAIL'}")
 
-    ok = poses_ok and upright
+    ok = planted_ok and poses_ok and upright
     print(f"\n{'ALL CHECKS PASSED' if ok else 'SOME CHECKS FAILED'}")
     return 0 if ok else 1
 
 
 def main():
-    print("default stance:")
-    print(ik.default_stance()[0])
-    ap = argparse.ArgumentParser(description="hexapod pose & wave demo")
+    ap = argparse.ArgumentParser(description="hexapod body-pose demo")
     ap.add_argument("--check", action="store_true", help="headless self-test")
     args = ap.parse_args()
     if args.check:
@@ -230,7 +238,7 @@ def main():
         return 1
     except Exception as exc:
         print(f"could not open the viewer ({exc}).")
-        print("Try the self-test instead:  python demo_pose_wave.py --check")
+        print("Try the self-test instead:  python demo_body_pose.py --check")
         return 1
     return 0
 
