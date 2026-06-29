@@ -111,6 +111,12 @@ do **not** route pose Data A → Embedded → Data B just to hand it over.
    Detections stay in pixel coords; 3D back-projection (camera intrinsics +
    extrinsics) is deferred jointly — Data B owns intrinsics, Data A owns the
    camera→body extrinsic once the mount is fixed.
+4. **Stance-stability flag for IQA** (Data B's Jun-26 ask). Data A computes a
+   `stability` block — `{stable, support_feet, margin_deg}` — inside
+   `pose_stamped` (from `foot_contacts` + body angular rate). Because it rides in
+   the message, the option-(c) freshest-pose **reply already carries it** — no
+   separate request or return value. Data B can skip/weight frames grabbed
+   mid-step (`stable=false`); image-only work is never blocked by it.
 
 **Answers to Data B Issue #11** (frame rate 50 Hz, same time domain yes,
 pose = position+quaternion in `odom`, formalize at Sprint 1) are posted to that

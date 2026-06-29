@@ -22,5 +22,6 @@
   },
   "gait": {"name": "tripod", "phase": 0.37},
   "foot_contacts": [true, false, true, false, true, false],
+  "stability": {"stable": true, "support_feet": 3, "margin_deg": 45.58},
   "node_id": "n12"
 }

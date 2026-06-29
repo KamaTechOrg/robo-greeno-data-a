@@ -51,6 +51,16 @@
       }
     },
     "foot_contacts": {"type": "array", "items": {"type": "boolean"}, "minItems": 6, "maxItems": 6, "description": "Per-leg ground contact, leg order front_left, mid_left, back_left, back_right, mid_right, front_right (same order as servo channels / URDF)."},
+    "stability": {
+      "type": "object",
+      "description": "Static-stability summary at capture, for Data B's IQA: weight or skip frames grabbed mid-step. Derived by Data A from foot_contacts + body angular rate, so Data B need not know gait internals. Rides in pose_stamped, so the option-(c) freshest-pose reply carries it (no separate request needed).",
+      "additionalProperties": false,
+      "properties": {
+        "stable": {"type": "boolean", "description": "True when the body is in a stable support state at this instant (>=3 feet planted, low body angular rate, CoM inside the support polygon) -- a good moment to trust the frame."},
+        "support_feet": {"type": "integer", "minimum": 0, "maximum": 6, "description": "Number of feet in ground contact at this instant."},
+        "margin_deg": {"type": "number", "description": "Static tip-over margin in degrees: the angle the body could tilt about the nearest support-polygon edge before the CoM projection leaves it. Larger = more stable; ~0 = on the verge; 0 when fewer than 3 feet are down."}
+      }
+    },
     "joint_angles_rad": {"type": "array", "items": {"type": "number"}, "minItems": 18, "maxItems": 18, "description": "Optional: 18 joint angles, channel order leg*3+{coxa,femur,tibia}. See servo_conventions.md."},
     "node_id": {"type": "string", "description": "Optional: nearest greenhouse-graph node id, for Cloud's node-based position model (e.g. 'n12')."}
   }

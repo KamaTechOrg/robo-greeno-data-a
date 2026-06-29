@@ -56,6 +56,46 @@ def yaw_to_quat(theta):
     return [math.cos(theta / 2.0), 0.0, 0.0, math.sin(theta / 2.0)]
 
 
+def stability(contacts, ang_z):
+    """Static-stability summary for the `stability` block (Data B's IQA).
+
+    `stable` = at least 3 feet down, low body angular rate, and the CoM
+    (body centre, here the origin) inside the support polygon. `margin_deg`
+    is the tip-over margin: the angle the body could tilt about the nearest
+    support-polygon edge before the CoM projection leaves it -- larger is
+    safer, ~0 is on the verge. Derived from the same signals every consumer
+    already has, so Data B does not have to know the gait internals."""
+    n = sum(contacts)
+    feet = [(C.STANCE_RADIUS * math.cos(C.LEGS[i][1]),
+             C.STANCE_RADIUS * math.sin(C.LEGS[i][1]))
+            for i, c in enumerate(contacts) if c]
+    margin_m = _support_margin(0.0, 0.0, feet) if n >= 3 else 0.0
+    margin_deg = math.degrees(math.atan2(margin_m, C.STANCE_HEIGHT))
+    stable = bool(n >= 3 and abs(ang_z) < 0.5 and margin_m > 0.0)
+    return {"stable": stable, "support_feet": n, "margin_deg": round(margin_deg, 2)}
+
+
+def _support_margin(px, py, feet):
+    """Signed distance from (px,py) to the support polygon of `feet`.
+
+    Positive = inside, and equal to the perpendicular distance to the nearest
+    edge (the static-stability margin). Zero or negative = on/outside the
+    polygon (unstable). Feet are ordered CCW about their centroid first."""
+    cx = sum(f[0] for f in feet) / len(feet)
+    cy = sum(f[1] for f in feet) / len(feet)
+    poly = sorted(feet, key=lambda f: math.atan2(f[1] - cy, f[0] - cx))
+    best, inside = float("inf"), True
+    for i in range(len(poly)):
+        ax, ay = poly[i]
+        bx, by = poly[(i + 1) % len(poly)]
+        ex, ey = bx - ax, by - ay
+        cross = ex * (py - ay) - ey * (px - ax)          # >0 = left of edge (inside, CCW)
+        if cross < 0:
+            inside = False
+        best = min(best, abs(cross) / math.hypot(ex, ey))
+    return best if inside else 0.0
+
+
 def make_message(seq, stamp_ms, x, y, theta, phase):
     a_down = phase < 0.5
     down = TRIPOD_A if a_down else TRIPOD_B
@@ -85,6 +125,7 @@ def make_message(seq, stamp_ms, x, y, theta, phase):
         },
         "gait": {"name": "tripod", "phase": round(phase, 3)},
         "foot_contacts": contacts,
+        "stability": stability(contacts, YAW_RATE),
         "node_id": f"n{int(x / 0.5):d}",   # coarse 0.5 m grid -> Cloud graph node
     }
     return msg
