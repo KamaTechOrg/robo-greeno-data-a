@@ -1,5 +1,16 @@
 # Robo-Greeno — Data A
 
+<p align="center">
+  <img src="docs/media/hw-04.jpg" width="82%"
+       alt="Robo-Greeno hexapod hardware — Raspberry Pi 5, custom 18-channel stepper-driver shields, 28BYJ-48 stepper motors, PCA9685, and HD camera" />
+</p>
+<p align="center">
+  <img src="docs/media/hw-01.jpg" width="30%" alt="Raspberry Pi 5 + 18-channel stepper-driver shield + PCA9685 servo driver" />
+  <img src="docs/media/hw-02.jpg" width="30%" alt="Custom stepper-driver shields with 28BYJ-48 motors" />
+  <img src="docs/media/hw-03.jpg" width="30%" alt="HD camera module among the driver boards" />
+</p>
+<p align="center"><sub><em>Real Robo-Greeno hardware — Raspberry&nbsp;Pi&nbsp;5 · custom 18-channel stepper-driver shields · 28BYJ-48 motors · PCA9685 · HD camera. (Animated sim-robot banner coming next.)</em></sub></p>
+
 > *A free, beginner-friendly **Physical AI tutorial**: large language models vs.
 > embodied AI, hexapod leg design, **MuJoCo** physics simulation, and
 > **reinforcement learning** for robot locomotion — taught through an
