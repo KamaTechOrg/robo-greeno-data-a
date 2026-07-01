@@ -27,7 +27,7 @@ share of the running demos plus the live walkthrough and discussion.
 | **Shira Marzel** | B — Turn in place | locomotion | `ShiraMarzel/turn-in-place/demo_turn_in_place.py` | spins **+177.9° / 8 s** | ✅ done · recorded |
 | **Miriam Kahaneman** | C — Draw a shape in the air | posing | `MiriamKahaneman/draw-shape/` *(planned)* | — | 🚧 in progress |
 
-> Mentor: **Ingyu Koh** ([`IngyuKoh/`](IngyuKoh)) — Data A track, May–Jul 2026.
+> Mentor: **Ingyu Koh** ([`project/IngyuKoh/`](project/IngyuKoh)) — Data A track, May–Jul 2026.
 
 ---
 

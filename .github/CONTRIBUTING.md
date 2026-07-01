@@ -60,7 +60,7 @@ curriculum — TAs in the upcoming bootcamp will teach the same flow.
    branch — the PR updates automatically.
 7. Once approved, the mentor merges. You can then delete the branch.
 
-Each weekly phase in [`PLAN.md`](PLAN.md) corresponds to a folder
+Each weekly phase in [`PLAN.md`](../project/PLAN.md) corresponds to a folder
 that gets added when the phase begins. Each phase ends with a
 tagged release (`wk2-ik`, `wk5-imu`, ...) so the bootcamp lab
 corresponding to that phase has a stable reference point.

@@ -65,22 +65,28 @@ Selected for student laptops + free GPU credits. No expensive lab HW.
 - **Target hardware:** ESP32 (~\$4) for low-level motion + IMU, Raspberry
   Pi 4/5 for on-device inference and BLE coordination
 
-See [`PLAN.md`](PLAN.md) for the 10-week phase plan and
-[`REFERENCES.md`](REFERENCES.md) for the starter reading list.
+See [`PLAN.md`](project/PLAN.md) for the 10-week phase plan and
+[`REFERENCES.md`](project/REFERENCES.md) for the starter reading list.
 
 ## Repository layout
 
 ```
 robo-greeno-data-a/
 ├── README.md          this file
-├── PLAN.md            10-week iteration plan with bootcamp lab outputs
-├── REFERENCES.md      papers, datasets, URDFs, and tutorials
-├── CONTRIBUTING.md    how participants and TAs work in this repo
 ├── LICENSE            MIT
-├── tutorial/         Physical AI tutorial — 4 chapters, reads on GitHub
+├── DEMO.md            team demo write-ups (per student)
+├── tutorial/          Physical AI tutorial — 4 chapters, reads on GitHub
+├── interfaces/        cross-team contract (pose schema, URDF, servo map)
+├── notebooks/         Colab notebooks
+├── <student>/         one folder per participant (kinematics/gait demos)
+├── project/           plan, references, mentor notes, PRs, leg-kinematics
+│   ├── PLAN.md        10-week iteration plan with bootcamp lab outputs
+│   └── REFERENCES.md  papers, datasets, URDFs, and tutorials
 └── docs/
     └── sketches/      design notes and origin material
 ```
+
+Contribution guide: [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 Code lands week by week as each phase is taught. The participants build
 the labs; the mentor seeds the plan.
@@ -89,7 +95,7 @@ the labs; the mentor seeds the plan.
 
 Each 10-week phase ships an open-source repo, a sim video, and metrics
 (cost-of-transport, task success rate, relative-pose RMSE). The right
-column of [`PLAN.md`](PLAN.md) names the bootcamp lab each phase
+column of [`PLAN.md`](project/PLAN.md) names the bootcamp lab each phase
 becomes — current Robo-Greeno participants are expected to lead these
 as TAs in the next bootcamp.
 
