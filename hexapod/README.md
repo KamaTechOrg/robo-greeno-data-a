@@ -17,6 +17,8 @@ hexapod/
 └── main.py           # choose sim or real
 ```
 
+**New here? Start with the [hardware-integration tutorial](TUTORIAL.md)** — concepts (PWM, PCA9685, I²C, open-loop, CSI) plus a walk through every module.
+
 ## The one interface
 
 Both backends expose the same two calls, so the gait and kinematics never know
