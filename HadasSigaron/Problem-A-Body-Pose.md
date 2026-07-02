@@ -1,7 +1,7 @@
 # Problem A — Body-pose control
 
 **Assigned to:** Hadas Sigaron
-**Builds on:** [`../PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
+**Builds on:** [`../PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/)
 **Companion problem (for reference):** [Problem B — Turn in place](../ShiraMarzel/Problem-B-Turn-In-Place.md) (assigned to Shira Marzel)
 
 ---
@@ -14,7 +14,7 @@ something new that is yours.
 
 Your problem is **Problem A — Body-pose control**, explicitly drawn
 from the two-problem set posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) (the other,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) (the other,
 Problem B — Turn in place, goes to Shira). The two problems are
 matched in difficulty: it does not matter which student takes which.
 Both end in a runnable demo you can record and show at the
@@ -38,7 +38,7 @@ body level while the feet sit on uneven ground is exactly this maths.
 
 ## Start from
 
-Copy the [`../PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
+Copy the [`../PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/)
 folder, rename it `body-pose/`, and work in a new file
 `demo_body_pose.py`. Keep `config.py`, `hexapod_ik.py` and
 `hexapod_model.py` unchanged — those are shared and fixed.

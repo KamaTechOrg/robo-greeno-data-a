@@ -12,14 +12,14 @@ _One paragraph: your year, background, what drew you to this project._
 
 The robot spins on the spot using the same alternating tripod rhythm
 — a stance foot traces an arc instead of a straight line. Builds on
-the [`PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+the [`PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 demo.
 
 **Deliver:** a `turn-in-place/` folder with `demo_turn_in_place.py`,
 a `--check`, a short README, and a screen recording.
 
 (Drawn from the two-problem set in
-[`../PhantomX/assignments/`](../PhantomX/assignments/); the companion,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/); the companion,
 Problem A — Body-pose control, goes to Hadas Sigaron.)
 
 ## My demo

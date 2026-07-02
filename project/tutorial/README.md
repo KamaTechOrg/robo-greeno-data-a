@@ -47,4 +47,4 @@ resource earns its keep.
 
 ---
 
-*Part of [Robo-Greeno — Data A](../README.md). Runnable notebooks live in [`notebooks/`](../notebooks).*
+*Part of [Robo-Greeno — Data A](../../README.md). Runnable notebooks live in [`notebooks/`](../notebooks).*

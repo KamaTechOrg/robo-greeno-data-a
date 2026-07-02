@@ -1,14 +1,14 @@
 # Robo-Greeno — Data A
 
 <p align="center">
-  <img src="docs/media/hero.gif" width="92%"
+  <img src="project/docs/media/hero.gif" width="92%"
        alt="Real Robo-Greeno hardware (Raspberry Pi 5 + 18-channel stepper-driver shield) beside the same six-legged robot turning in place in MuJoCo simulation" />
 </p>
 <p align="center">
-  <img src="docs/media/hw-01.jpg" width="23%" alt="Raspberry Pi 5 + 18-channel stepper-driver shield + PCA9685 servo driver" />
-  <img src="docs/media/hw-02.jpg" width="23%" alt="Custom stepper-driver shields with 28BYJ-48 motors" />
-  <img src="docs/media/hw-03.jpg" width="23%" alt="HD camera module among the driver boards" />
-  <img src="docs/media/hw-04.jpg" width="23%" alt="Full Robo-Greeno hardware kit" />
+  <img src="project/docs/media/hw-01.jpg" width="23%" alt="Raspberry Pi 5 + 18-channel stepper-driver shield + PCA9685 servo driver" />
+  <img src="project/docs/media/hw-02.jpg" width="23%" alt="Custom stepper-driver shields with 28BYJ-48 motors" />
+  <img src="project/docs/media/hw-03.jpg" width="23%" alt="HD camera module among the driver boards" />
+  <img src="project/docs/media/hw-04.jpg" width="23%" alt="Full Robo-Greeno hardware kit" />
 </p>
 <p align="center"><sub><em>Left: real hardware — Raspberry&nbsp;Pi&nbsp;5 · custom 18-channel stepper-driver shields · 28BYJ-48 motors · PCA9685 · HD camera.&nbsp; Right: the same six-legged robot in MuJoCo simulation.</em></sub></p>
 
@@ -37,12 +37,12 @@ simulation, and **reinforcement learning** for legged robot locomotion. Taught
 through this open-source hexapod and **fully readable on GitHub** — clickable
 navigation, Mermaid diagrams, and callout boxes, with no website or build step:
 
-1. **[LLM AI vs Physical AI](tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
-2. **[Legs and Fingers — Nature's Engineering](tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
-3. **[MuJoCo Without Tears](tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works.
-4. **[Reinforcement Learning, Intuitively](tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, sim-to-real.
+1. **[LLM AI vs Physical AI](project/tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
+2. **[Legs and Fingers — Nature's Engineering](project/tutorial/02-legs-and-fingers.md)** — why a hexapod is the best first robot.
+3. **[MuJoCo Without Tears](project/tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works.
+4. **[Reinforcement Learning, Intuitively](project/tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, sim-to-real.
 
-→ **[Tutorial overview & how to read](tutorial/README.md)**
+→ **[Tutorial overview & how to read](project/tutorial/README.md)**
 
 ## Team
 
@@ -75,15 +75,12 @@ robo-greeno-data-a/
 ├── README.md          this file
 ├── LICENSE            MIT
 ├── DEMO.md            team demo write-ups (per student)
-├── tutorial/          Physical AI tutorial — 4 chapters, reads on GitHub
-├── interfaces/        cross-team contract (pose schema, URDF, servo map)
-├── notebooks/         Colab notebooks
+├── hexapod/           sim ↔ real integration — MuJoCo + PCA9685 servos + CSI camera
+├── interfaces/        cross-team contract (pose schema, URDF, servo map, wiring)
 ├── <student>/         one folder per participant (kinematics/gait demos)
-├── project/           plan, references, mentor notes, PRs, leg-kinematics
-│   ├── PLAN.md        10-week iteration plan with bootcamp lab outputs
-│   └── REFERENCES.md  papers, datasets, URDFs, and tutorials
-└── docs/
-    └── sketches/      design notes and origin material
+└── project/           everything else, kept out of the root:
+                       tutorial/ · notebooks/ · RL/ · PhantomX/ · PLAN.md ·
+                       REFERENCES.md · CITATION.cff · docs/media (hero GIF + hardware)
 ```
 
 Contribution guide: [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md).
@@ -116,8 +113,8 @@ The concrete interface contract — shared conventions, the canonical
 ## Citing this work
 
 If you use this repository in research or teaching, please cite it.
-GitHub's **"Cite this repository"** button (top right of the repo page,
-powered by [`CITATION.cff`](CITATION.cff)) gives APA and BibTeX. Or:
+Machine-readable metadata (APA + BibTeX) is in
+[`project/CITATION.cff`](project/CITATION.cff); the BibTeX entry:
 
 ```bibtex
 @software{robo_greeno_data_a_2026,
@@ -134,7 +131,7 @@ powered by [`CITATION.cff`](CITATION.cff)) gives APA and BibTeX. Or:
 A version-pinned **DOI** (the gold standard for citation) can be minted by
 depositing a release snapshot to [Zenodo](https://zenodo.org) — no
 organization-admin rights required. Once minted, the DOI badge goes here and in
-[`CITATION.cff`](CITATION.cff).
+[`CITATION.cff`](project/CITATION.cff).
 
 ## License
 

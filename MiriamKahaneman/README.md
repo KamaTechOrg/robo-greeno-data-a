@@ -12,13 +12,13 @@ _One paragraph: your year, background, what drew you to this project._
 
 The robot stands on five legs while the sixth lifts off and traces a
 circle, a square, and a figure-eight in the air. Builds on the
-[`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/) demo.
+[`PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/) demo.
 
 **Deliver:** a `draw-shape/` folder with `demo_draw_shape.py`, a
 `--check`, a short README, and a screen recording.
 
 (One of four matched-difficulty problems posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) — two posing,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) — two posing,
 two locomotion. This is a posing problem, peer to Hadas's.)
 
 ## My weekly log

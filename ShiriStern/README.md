@@ -13,7 +13,7 @@ _One paragraph: your year, background, what drew you to this project._
 A slower, steadier walk where legs step one at a time instead of
 three at once. You change only the per-leg timing offsets — and end
 with two demos side by side (tripod vs wave) for direct comparison.
-Builds on the [`PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+Builds on the [`PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 demo.
 
 **Deliver:** a `wave-walk/` folder with `demo_wave_walk.py`, a
@@ -21,7 +21,7 @@ demo.
 comparison), and a screen recording.
 
 (One of four matched-difficulty problems posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) — two posing,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) — two posing,
 two locomotion. This is a locomotion problem, peer to Shira's.)
 
 ## My weekly log

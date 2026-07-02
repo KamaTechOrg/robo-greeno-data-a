@@ -155,14 +155,14 @@ points, and record the three shapes.
 ## 📚 Further learning — the Physical AI tutorial
 
 New to embodied AI? Start with our four-chapter, beginner-friendly
-**[Physical AI tutorial](tutorial/README.md)**. It renders natively right here on
+**[Physical AI tutorial](project/tutorial/README.md)**. It renders natively right here on
 GitHub — clickable, no website or build step — and each chapter ends with a
 runnable Colab notebook.
 
-1. **[LLM vs Physical AI](tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
-2. **[Legs and Fingers](tutorial/02-legs-and-fingers.md)** — why nature builds six, eight, and two legs (and ten fingers) the way it does.
-3. **[MuJoCo Intuition](tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works, with zero hand-waving.
-4. **[RL Intuition](tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, and sim-to-real, through one hexapod learning to walk.
+1. **[LLM vs Physical AI](project/tutorial/01-llm-vs-physical-ai.md)** — what changes when intelligence gets a body.
+2. **[Legs and Fingers](project/tutorial/02-legs-and-fingers.md)** — why nature builds six, eight, and two legs (and ten fingers) the way it does.
+3. **[MuJoCo Intuition](project/tutorial/03-mujoco-intuition.md)** — how a physics simulator actually works, with zero hand-waving.
+4. **[RL Intuition](project/tutorial/04-rl-intuition.md)** — states, actions, rewards, PPO, and sim-to-real, through one hexapod learning to walk.
 
 ## 🤝 Cross-team coordination — ready
 

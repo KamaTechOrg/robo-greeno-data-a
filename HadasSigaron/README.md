@@ -12,13 +12,13 @@ _One paragraph: your year, background, what drew you to this project._
 
 All six feet stay planted; the body rises, lowers, pitches and rolls
 in a smooth routine. Builds on the
-[`PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/) demo.
+[`PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/) demo.
 
 **Deliver:** a `body-pose/` folder with `demo_body_pose.py`, a
 `--check`, a short README, and a screen recording.
 
 (Drawn from the two-problem set in
-[`../PhantomX/assignments/`](../PhantomX/assignments/); the companion,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/); the companion,
 Problem B — Turn in place, goes to Shira Marzel.)
 
 ## My weekly log

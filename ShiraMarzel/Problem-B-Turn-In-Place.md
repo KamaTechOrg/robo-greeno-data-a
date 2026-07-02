@@ -1,7 +1,7 @@
 # Problem B — Turn in place
 
 **Assigned to:** Shira Marzel
-**Builds on:** [`../PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+**Builds on:** [`../PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 **Companion problem (for reference):** [Problem A — Body-pose control](../HadasSigaron/Problem-A-Body-Pose.md) (assigned to Hadas Sigaron)
 
 ---
@@ -14,7 +14,7 @@ something new that is yours.
 
 Your problem is **Problem B — Turn in place**, explicitly drawn from
 the two-problem set posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) (the other,
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) (the other,
 Problem A — Body-pose control, goes to Hadas). The two problems are
 matched in difficulty: it does not matter which student takes which.
 Both end in a runnable demo you can record and show at the
@@ -39,7 +39,7 @@ the ground.
 
 ## Start from
 
-Copy the [`../PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+Copy the [`../PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 folder, rename it `turn-in-place/`, and work in a new file
 `demo_turn_in_place.py`. Keep the three shared files unchanged.
 

@@ -1,7 +1,7 @@
 # Problem D — The wave gait
 
 **Assigned to:** Shiri Stern
-**Builds on:** [`../PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+**Builds on:** [`../PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 **Companion problems (for reference):**
 [Problem A — Body-pose control](../HadasSigaron/Problem-A-Body-Pose.md) · Hadas Sigaron
 [Problem B — Turn in place](../ShiraMarzel/Problem-B-Turn-In-Place.md) · Shira Marzel
@@ -17,7 +17,7 @@ something new that is yours.
 
 Your problem is **Problem D — The wave gait**, one of four
 matched-difficulty problems posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) (two **posing**
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) (two **posing**
 problems, two **locomotion** problems; this is a locomotion problem,
 peer to Shira's). All four problems end in a runnable demo you can
 record and show at the checkpoint.
@@ -45,7 +45,7 @@ short note comparing them.
 
 ## Start from
 
-Copy the [`../PhantomX/demos/tripod-walk/`](../PhantomX/demos/tripod-walk/)
+Copy the [`../PhantomX/demos/tripod-walk/`](../project/PhantomX/demos/tripod-walk/)
 folder, rename it `wave-walk/`, and work in a new file
 `demo_wave_walk.py`. Keep `config.py`, `hexapod_ik.py` and
 `hexapod_model.py` unchanged — those are shared and fixed.

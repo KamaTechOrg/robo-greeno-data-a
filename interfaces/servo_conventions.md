@@ -39,7 +39,7 @@ BL +135°, BR −135°, MR −90°, FR −45°. Link lengths: coxa 0.040 m, femu
 0.080 m, tibia 0.130 m.
 
 This 0…17 order is **identical** to the 18-dim RL action/observation vector in
-[`RL/hexapod_env.py`](../RL/hexapod_env.py), so a trained policy maps to servo
+[`RL/hexapod_env.py`](../project/RL/hexapod_env.py), so a trained policy maps to servo
 channels with no reindexing.
 
 ## Command interface (Data A → Embedded)

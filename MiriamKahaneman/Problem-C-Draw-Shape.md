@@ -1,7 +1,7 @@
 # Problem C — Draw a shape in the air
 
 **Assigned to:** Miriam Kahaneman
-**Builds on:** [`../PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
+**Builds on:** [`../PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/)
 **Companion problems (for reference):**
 [Problem A — Body-pose control](../HadasSigaron/Problem-A-Body-Pose.md) · Hadas Sigaron
 [Problem B — Turn in place](../ShiraMarzel/Problem-B-Turn-In-Place.md) · Shira Marzel
@@ -17,7 +17,7 @@ something new that is yours.
 
 Your problem is **Problem C — Draw a shape in the air**, one of four
 matched-difficulty problems posted in
-[`../PhantomX/assignments/`](../PhantomX/assignments/) (two **posing**
+[`../PhantomX/assignments/`](../project/PhantomX/assignments/) (two **posing**
 problems, two **locomotion** problems; this is a posing problem,
 peer to Hadas's). All four problems end in a runnable demo you can
 record and show at the checkpoint.
@@ -43,7 +43,7 @@ prescribed path.
 
 ## Start from
 
-Copy the [`../PhantomX/demos/pose-wave/`](../PhantomX/demos/pose-wave/)
+Copy the [`../PhantomX/demos/pose-wave/`](../project/PhantomX/demos/pose-wave/)
 folder, rename it `draw-shape/`, and work in a new file
 `demo_draw_shape.py`. Keep `config.py`, `hexapod_ik.py` and
 `hexapod_model.py` unchanged — those are shared and fixed.
